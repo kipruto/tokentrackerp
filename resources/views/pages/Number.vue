@@ -1,3 +1,5 @@
+<template>
+
 <div class="grid grid-cols-4 gap-6 xl:grid-cols-2">
 
     <!-- card -->
@@ -69,3 +71,5 @@
     <!-- end card -->
 
 </div>
+
+</template>

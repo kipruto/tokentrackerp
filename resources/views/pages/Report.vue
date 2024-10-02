@@ -1,3 +1,5 @@
+
+<template>
 <div class="grid grid-cols-5 gap-5 mt-5 lg:grid-cols-2">
 
     <!-- status -->
@@ -49,6 +51,5 @@
         </div>
     </div>
     <!-- status -->
-    
- 
 </div>
+</template>

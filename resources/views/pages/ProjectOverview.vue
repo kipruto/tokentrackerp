@@ -1,5 +1,5 @@
+<template>
 <div class="card mt-6">
-
     <!-- header -->
     <div class="card-header flex flex-row justify-between">
         <h1 class="h6">Performance Overview</h1>
@@ -39,16 +39,13 @@
                 </div>
                 <p class="text-black"><span class="num-2 text-red-400"></span><span class="text-red-400">3% more time per task</span> in comparison to last month.</p>
             </div>
-
             <a href="#" class="btn-shadow mt-6">view details</a>
-
         </div>
-
         <div class="">
             <div id="sealsOverview"></div>
         </div>
-
     </div>
     <!-- end body -->
 
 </div>
+</template>

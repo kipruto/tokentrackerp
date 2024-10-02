@@ -32,5 +32,22 @@ class UsersTableSeeder extends Seeder
             'role' => 'admin', // Assign a different role
             'created_at' => now(),
         ]);
+
+        User::create([
+            'name' => 'Collins CE',
+            'email' => 'collins@gmail.com',
+            'password' => Hash::make('password'), // You can change the password
+            'role' => 'admin', // Assign a different role
+            'created_at' => now(),
+        ]);
+
+
+        User::create([
+            'name' => 'Alex CE',
+            'email' => 'alex@gmail.com',
+            'password' => Hash::make('password'), // You can change the password
+            'role' => 'admin', // Assign a different role
+            'created_at' => now(),
+        ]);
     }
 }

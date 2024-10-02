@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
 
-    public function showLoginForm()
-    {
-
-        return view('auth.login');
-    }
-
     // Handle the login request
 
     public function login(Request $request)
@@ -22,28 +16,37 @@ class LoginController extends Controller
         // Validate the login request
         $request->validate([
             'email' => 'required | email',
-           'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8',
         ]);
 
         // Attempt to log in the user
         if (Auth::attempt($request->only('email', 'password'))) {
+            // Authentication passed...
+            $user = Auth::user();
 
-            $request->session()->regenerate();
-        // Redirect to the dashboard or intended route
-            return redirect()->intended('dashboard');
+            // Return a response with the user info
+            return response()->json([
+                'success' => true,
+                'user' => $user,
+            ], 200);
         }
-        return redirect()->back()
-        ->withErrors(['errorMessage' => 'These credentials do not match our records.'])
-        ->withInput($request->except('password'));
+
+        // Return an error response for failed login
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid Email or Password. Please try again!',
+        ], 401);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        // Return a success response
+        return response()->json(['success' => true, 'message' => 'Successfully logged out']);
 
     }
 }

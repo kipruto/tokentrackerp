@@ -1,4 +1,6 @@
-  <!-- start sidebar -->
+<template>
+
+<!-- start sidebar -->
   <div id="sideBar" class="relative flex flex-col flex-wrap bg-white border-r border-gray-300 p-6 flex-none w-64 md:-ml-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster">
 
     <!-- sidebar content -->
@@ -25,26 +27,16 @@
         <i class="fad fa-folder text-xs mr-2"></i>
         CE Global
       </a>
-      <!-- end link -->
-      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Projects</p>
-      <!-- link -->
-      <a href="./buttons.html" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-tasks text-xs mr-2"></i>
-        SizStart Branding
+      <a href="/createworkspace" class="mb-3 capitalize font-medium text-xs hover:text-teal-600 transition ease-in-out duration-500 text-blue-500">
+        + New Workspace
       </a>
-      <!-- end link -->
 
-      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Tasks</p>
+      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Tools</p>
       <!-- link -->
-      <a href="/kanban" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-      <i class="fad fa-check text-xs mr-2"></i>
-       task board
-      </a>
-      <!-- end link -->
+
   <!-- link -->
   <a href="/timesheets" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-      <i class="fad fa-history text-xs mr-2"></i>
-       timesheets
+      <i class="fad fa-history text-xs mr-2"></i>timesheets
       </a>
       <!-- end link -->
        <!-- link -->
@@ -56,14 +48,14 @@
       <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">my apps</p>
       <!-- link -->
       <a href="./email.html" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-envelope-open-text text-xs mr-2"></i>
-        email
+        <i class="fad fa-usd-circle mr-2"></i>
+        My Wallet
       </a>
       <!-- end link -->
       <!-- link -->
-      <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="#" class="mb-3 font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-comments text-xs mr-2"></i>
-        chat
+        ChatGPT
       </a>
       <!-- end link -->
 
@@ -81,12 +73,9 @@
       </a>
       <!-- end link -->
 
-
-
-
-
     </div>
     <!-- end sidebar content -->
 
   </div>
   <!-- end sidbar -->
+</template>

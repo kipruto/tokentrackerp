@@ -1,8 +1,19 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::group(['middleware' => ['api']], function () {
+
+
+});
+
+Route::get('/php-version', function () {
+    return response()->json([
+        'app_version' => env('APP_VERSION'),
+        'php_version' => phpversion(),
+    ]);
+});
