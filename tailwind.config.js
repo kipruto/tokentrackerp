@@ -1,5 +1,6 @@
 module.exports = {
   content: [
+    'node_modules/daisyui/**/*',
     './resources/**/*.blade.php',
     './resources/**/*.js',
     './resources/**/*.vue',
@@ -16,5 +17,7 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 }

@@ -12,67 +12,72 @@
         </button>
       </div>
       <!-- end sidebar toggle -->
-      <p class="uppercase text-xs text-gray-600 mb-4 tracking-wider">home</p>
+      <p class="uppercase text-md text-gray-600 mb-4 tracking-wider">home</p>
       <!-- link -->
       <a href="/dashboard" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-chart-pie text-xs mr-2"></i>
+        <i class="fad fa-chart-pie text-md mr-2"></i>
         dashboard
       </a>
       <!-- end link -->
-      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">my workspaces</p>
+      <p class="uppercase text-md text-gray-600 mb-4 mt-4 tracking-wider">my workspaces</p>
       <!-- link -->
 
          <!-- link -->
          <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-folder text-xs mr-2"></i>
+        <i class="fad fa-folder text-md mr-2"></i>
         CE Global
       </a>
-      <a href="/createworkspace" class="mb-3 capitalize font-medium text-xs hover:text-teal-600 transition ease-in-out duration-500 text-blue-500">
+      <a href="/createworkspace" class="mb-3 capitalize font-medium text-md hover:text-teal-600 transition ease-in-out duration-500 text-blue-500">
         + New Workspace
       </a>
 
-      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Tools</p>
+      <p class="uppercase text-md text-gray-600 mb-4 mt-4 tracking-wider">Tools</p>
       <!-- link -->
 
   <!-- link -->
   <a href="/timesheets" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-      <i class="fad fa-history text-xs mr-2"></i>timesheets
+      <i class="fad fa-history text-md mr-2"></i>timesheets
       </a>
       <!-- end link -->
        <!-- link -->
        <a href="/invoices" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-file-invoice-dollar text-xs mr-2"></i>
+        <i class="fad fa-file-invoice-dollar text-md mr-2"></i>
         invoices
       </a>
       <!-- end link -->
-      <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">my apps</p>
+      <p class="uppercase text-md text-gray-600 mb-4 mt-4 tracking-wider">my apps</p>
       <!-- link -->
-      <a href="./email.html" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+      <a href="/wallet" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
         <i class="fad fa-usd-circle mr-2"></i>
         My Wallet
       </a>
       <!-- end link -->
       <!-- link -->
       <a href="#" class="mb-3 font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-comments text-xs mr-2"></i>
+        <i class="fad fa-comments text-md mr-2"></i>
         ChatGPT
       </a>
       <!-- end link -->
 
       <!-- link -->
       <a href="#" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-shield-check text-xs mr-2"></i>
+        <i class="fad fa-shield-check text-md mr-2"></i>
         my notes
       </a>
       <!-- end link -->
 
       <!-- link -->
       <a href="/calendar" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-        <i class="fad fa-calendar-edit text-xs mr-2"></i>
+        <i class="fad fa-calendar-edit text-md mr-2"></i>
         calendar
       </a>
       <!-- end link -->
 
+      <p class="uppercase text-md text-gray-600 mb-4 mt-4 tracking-wider">Settings</p>
+      <a href="/settings" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+        <i class="fad fa-cog text-md mr-2"></i>
+        Settings
+      </a>
     </div>
     <!-- end sidebar content -->
 

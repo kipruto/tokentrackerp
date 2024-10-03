@@ -1,9 +1,13 @@
 <template>
+  <div>
+    <Navbar />
+
+    <!-- start wrapper -->
     <div class="h-screen flex flex-row flex-wrap">
-      <Navbar />
       <Sidebar />
 
-      <!-- Start content -->
+      <!-- start content -->
+
       <div class="bg-gray-100 flex-1 p-6 md:mt-16">
         <div class="grid grid-cols-2 gap-2">
           <div class="md:py-8 py-5 md:px-16 px-5 dark:bg-gray-700 bg-white rounded shadow">
@@ -56,17 +60,25 @@
           </div>
         </div>
       </div>
-      <!-- End content -->
-
-      <Modal v-if="showModal" @close="closeModal" />
+      <!-- end content -->
     </div>
-  </template>
+    <!-- end wrapper -->
+
+    <Footer />
+  </div>
+</template>
+
+
+
+
+
+
 
   <script>
   import Navbar from '../layouts/Navbar.vue';
   import Sidebar from '../layouts/Sidebar.vue';
   import Modal from '../components/Modal.vue'; // Adjust path as needed
- 
+
   export default {
     components: {
       Navbar,

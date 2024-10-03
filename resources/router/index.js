@@ -14,8 +14,12 @@ import ResetPassword from "../views/pages/ResetPassword.vue";
 import CreateWorkspace from "../views/pages/CreateWorkspace.vue";
 import ServerError404 from "../views/pagesError/404.vue";
 import ServerError500 from "../views/pagesError/500.vue";
-
-import store from "../store"; // Assuming you use Vuex for state management
+import NewWallet from "../views/pages/NewWallet.vue";
+import Roles from "../views/pages/settings_pages/Roles.vue";
+import Notifications from "../views/pages/settings_pages/Notifications.vue";
+import BillingTokens from "../views/pages/settings_pages/BillingTokens.vue";
+import Integrations from "../views/pages/settings_pages/Integrations.vue";
+import AccountSettings from "../views/pages/settings_pages/AccountSettings.vue";
 
 const isAuthenticated = () => {
     return !!localStorage.getItem("user"); // Example: Check if the user object exists in localStorage
@@ -84,11 +88,44 @@ const routes = [
 
             { path: "wallet", component: Wallet, name: "wallet" },
 
+            { path: "newwallet", component: NewWallet, name: "newwallet" },
+
             { path: "kanban", component: Kanban, name: "kanban" },
 
             { path: "calendar", component: Calendar, name: "calendar" },
 
             { path: "settings", component: Settings, name: "settings" },
+        ],
+    },
+
+    {
+        path: "/settings",
+        component: Settings,
+        children: [
+            {
+                path: "",
+                component: AccountSettings,
+            },
+
+            {
+                path: "roles",
+                component: Roles,
+            },
+
+            {
+                path: "billingtokens",
+                component: BillingTokens,
+            },
+
+            {
+                path: "integrations",
+                component: Integrations,
+            },
+
+            {
+                path: "notifications",
+                component: Notifications,
+            },
         ],
     },
 ];
@@ -101,11 +138,14 @@ const router = createRouter({
 // Navigation guard to check for authentication
 router.beforeEach((to, from, next) => {
     // If the route requires authentication and the user is not authenticated, redirect to /login
-    if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated()) {
-      next({ name: 'login' });
+    if (
+        to.matched.some((record) => record.meta.requiresAuth) &&
+        !isAuthenticated()
+    ) {
+        next({ name: "login" });
     } else {
-      next(); // Proceed as normal
+        next(); // Proceed as normal
     }
-  });
+});
 
 export default router;
