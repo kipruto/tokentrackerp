@@ -14,15 +14,12 @@ import ResetPassword from "../views/pages/ResetPassword.vue";
 import CreateWorkspace from "../views/pages/CreateWorkspace.vue";
 import ServerError404 from "../views/pagesError/404.vue";
 import ServerError500 from "../views/pagesError/500.vue";
-import NewWallet from "../views/pages/NewWallet.vue";
-import Roles from "../views/pages/settings_pages/Roles.vue";
-import Notifications from "../views/pages/settings_pages/Notifications.vue";
-import BillingTokens from "../views/pages/settings_pages/BillingTokens.vue";
-import Integrations from "../views/pages/settings_pages/Integrations.vue";
-import AccountSettings from "../views/pages/settings_pages/AccountSettings.vue";
+import store from "../store";
+import Notes from "../views/pages/Notes.vue";
+
 
 const isAuthenticated = () => {
-    return !!localStorage.getItem("user"); // Example: Check if the user object exists in localStorage
+    return store.getters.isAuthenticated;
 };
 
 const routes = [
@@ -75,7 +72,20 @@ const routes = [
                 name: "createworkspace",
             },
 
-            { path: "workspace", component: Workspace, name: "workspace" },
+            {
+                path: '/workspaces/:id',
+                component: Workspace,
+                name: 'workspace',
+                props: route => ({ id: route.params.id, workspace_name: route.params.workspace_name })
+                // props: true, // Enables the route to pass the :id param as a prop to the Workspace component
+            },
+
+            {
+                path: "mynotes",
+                component: Notes,
+                name: "mynotes",
+            },
+
             {
                 path: "manageusers",
                 component: ManageUsers,
@@ -88,8 +98,6 @@ const routes = [
 
             { path: "wallet", component: Wallet, name: "wallet" },
 
-            { path: "newwallet", component: NewWallet, name: "newwallet" },
-
             { path: "kanban", component: Kanban, name: "kanban" },
 
             { path: "calendar", component: Calendar, name: "calendar" },
@@ -101,32 +109,6 @@ const routes = [
     {
         path: "/settings",
         component: Settings,
-        children: [
-            {
-                path: "",
-                component: AccountSettings,
-            },
-
-            {
-                path: "roles",
-                component: Roles,
-            },
-
-            {
-                path: "billingtokens",
-                component: BillingTokens,
-            },
-
-            {
-                path: "integrations",
-                component: Integrations,
-            },
-
-            {
-                path: "notifications",
-                component: Notifications,
-            },
-        ],
     },
 ];
 
@@ -142,8 +124,10 @@ router.beforeEach((to, from, next) => {
         to.matched.some((record) => record.meta.requiresAuth) &&
         !isAuthenticated()
     ) {
+
         next({ name: "login" });
     } else {
+
         next(); // Proceed as normal
     }
 });

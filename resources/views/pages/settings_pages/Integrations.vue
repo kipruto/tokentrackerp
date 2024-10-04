@@ -1,9 +1,9 @@
 <template>
     <div class="container mx-auto p-6">
-      <h1 class="text-2xl font-semibold mb-6">Calendly Integration Settings</h1>
+      <h1 class="text-xl font-semibold mb-6">Calendly Integration Settings</h1>
 
       <!-- Calendly API Key Section -->
-      <div class="bg-white shadow-md rounded-lg p-4 mb-6">
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
         <h2 class="text-xl font-semibold mb-4">Calendly API Key</h2>
         <div class="flex items-center space-x-4">
           <label for="api-key" class="text-gray-700">API Key:</label>
@@ -23,7 +23,7 @@
       </div>
 
       <!-- Calendly Webhook Section -->
-      <div class="bg-white shadow-md rounded-lg p-4 mb-6">
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
         <h2 class="text-xl font-semibold mb-4">Webhook URL</h2>
         <div class="flex items-center space-x-4">
           <label for="webhook-url" class="text-gray-700">Webhook URL:</label>
@@ -43,7 +43,7 @@
       </div>
 
       <!-- Calendly Scheduling Page URL -->
-      <div class="bg-white shadow-md rounded-lg p-4 mb-6">
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
         <h2 class="text-xl font-semibold mb-4">Scheduling Page URL</h2>
         <div class="flex items-center space-x-4">
           <label for="scheduling-url" class="text-gray-700">Public Scheduling URL:</label>
@@ -63,7 +63,7 @@
       </div>
 
       <!-- Reset Calendly Settings -->
-      <div class="bg-white shadow-md rounded-lg p-4">
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
         <h2 class="text-xl font-semibold mb-4">Reset Calendly Settings</h2>
         <div class="flex justify-between items-center">
           <p class="text-gray-700">Reset all Calendly settings to default values.</p>
@@ -77,6 +77,7 @@
 
   <script>
   export default {
+    name: "Integrations",
     data() {
       return {
         apiKey: '', // Calendly API Key

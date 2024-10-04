@@ -1,12 +1,12 @@
 <template>
     <div class="container mx-auto p-6">
-      <h1 class="text-2xl font-semibold mb-6">Token Management Settings</h1>
+      <h1 class="text-xl font-semibold mb-4">Token Management Settings</h1>
 
       <!-- Update Token Value Section -->
-      <div class="bg-white shadow-md rounded-lg p-4 mb-6">
-        <h2 class="text-xl font-semibold mb-4">Update Token Value</h2>
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
+        <h2 class="text-lg font-semibold mb-4">Update Token Value</h2>
         <div class="flex items-center space-x-4">
-          <label for="token-value" class="text-gray-700">Current Token Value (in $):</label>
+          <label for="token-value" class="text-gray-500">Current Token Value (in $):</label>
           <input
             type="number"
             id="token-value"
@@ -24,10 +24,10 @@
       </div>
 
       <!-- Revoke Tokens Section -->
-      <div class="bg-white shadow-md rounded-lg p-4 mb-6">
-        <h2 class="text-xl font-semibold mb-4">Revoke Tokens</h2>
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
+        <h2 class="text-lg font-semibold mb-4">Revoke Tokens</h2>
         <div class="flex items-center space-x-4">
-          <label for="revoke-reason" class="text-gray-700">Revoke all user tokens for the following reason:</label>
+          <label for="revoke-reason" class="text-gray-500">Revoke all user tokens for the following reason:</label>
           <input
             type="text"
             id="revoke-reason"
@@ -47,10 +47,10 @@
       </div>
 
       <!-- Set Redemption Threshold Section -->
-      <div class="bg-white shadow-md rounded-lg p-4 mb-6">
-        <h2 class="text-xl font-semibold mb-4">Set Redemption Threshold</h2>
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
+        <h2 class="text-lg font-semibold mb-4">Set Redemption Threshold</h2>
         <div class="flex items-center space-x-4">
-          <label for="threshold" class="text-gray-700">Redemption Threshold (in $):</label>
+          <label for="threshold" class="text-gray-500">Redemption Threshold (in $):</label>
           <input
             type="number"
             id="threshold"
@@ -68,10 +68,10 @@
       </div>
 
       <!-- Reset Token Settings -->
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <h2 class="text-xl font-semibold mb-4">Reset Token Settings</h2>
+      <div class="bg-white border-t border-gray-200 mb-4 py-6">
+        <h2 class="text-lg font-semibold mb-4">Reset Token Settings</h2>
         <div class="flex justify-between items-center">
-          <p class="text-gray-700">Reset all token settings to default values.</p>
+          <p class="text-gray-500">Reset all token settings to default values.</p>
           <button
             @click="resetTokenSettings"
             class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
@@ -85,6 +85,7 @@
 
   <script>
   export default {
+    name: "BillingTokens",
     data() {
       return {
         tokenValue: 1.0, // Default token value in $

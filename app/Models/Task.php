@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
+
+    protected $filliable = [
+        "task_name",
+        "assigned_to",
+        "budget_allocated",
+        "current_status",
+        "file_name",
+        "file_url",
+        "created_by",
+    ];
 }

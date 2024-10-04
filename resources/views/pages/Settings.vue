@@ -16,19 +16,19 @@
                 <!-- Render settings pages here -->
                 <div class="w-full my-3">
                   <ul class="flex space-x-4 border-b pt-4">
-                  <router-link to="/settings" class="cursor-pointer px-4 py-2 font-semibold text-gray-700 transition hover:border-b-blue-700 hover:text-blue-700" active-class="bg-blue-50 border-blue-500 text-blue-500"> General Settings </router-link>
+                    <li @click="setActiveTab('accountsettings')" class="cursor-pointer px-4 py-2 font-semibold" :class="{ 'text-blue-500 border-b-blue-700 border-b bg-blue-50 border-blue-500 ': isActiveTab('accountsettings') }">AccountSettings</li>
 
-                  <router-link to="/settings/roles" class="cursor-pointer px-4 py-2 font-semibold text-gray-700  transition hover:border-b-blue-700 hover:text-blue-700" > Roles & Permissions </router-link>
+                    <li @click="setActiveTab('roles')" class="cursor-pointer px-4 py-2 font-semibold" :class="{ 'text-blue-500 border-b-blue-700 border-b bg-blue-50 border-blue-500': isActiveTab('roles') }">Roles & Permissions</li>
 
-                  <router-link to="/settings/billingtokens" class="cursor-pointer px-4 py-2 font-semibold text-gray-700  transition hover:border-b-blue-700 hover:text-blue-700" > Billings& Tokens</router-link>
+                    <li @click="setActiveTab('billingtokens')" class="cursor-pointer px-4 py-2 font-semibold" :class="{ 'text-blue-500 border-b-blue-700 border-b bg-blue-50 border-blue-500': isActiveTab('billingtokens') }">Billings & Tokens</li>
 
-                  <router-link to="/settings/notifications" class="cursor-pointer px-4 py-2 font-semibold text-gray-700  transition hover:border-b-blue-700 hover:text-blue-700" > Notifications </router-link>
+                    <li @click="setActiveTab('notifications')" class="cursor-pointer px-4 py-2 font-semibold" :class="{ 'text-blue-500 border-b-blue-700 border-b bg-blue-50 border-blue-500': isActiveTab('notifications') }">Notifications</li>
 
-                  <router-link to="/settings/integrations" class="cursor-pointer px-4 py-2 font-semibold text-gray-700  transition hover:border-b-blue-700 hover:text-blue-700" > API & Integrations </router-link>
+                    <li @click="setActiveTab('integrations')" class="cursor-pointer px-4 py-2 font-semibold" :class="{ 'text-blue-500 border-b-blue-700 border-b bg-blue-50 border-blue-500': isActiveTab('integrations') }">API & Integration</li>
+
                   </ul>
                 </div>
-
-                <router-view></router-view>
+                <component :is="activeTabComponent"></component>
                 </div>
               </div>
             </div>
@@ -43,24 +43,45 @@
   </template>
 
   <script>
-  import Navbar from '../layouts/Navbar.vue'
-  import Sidebar from '../layouts/Sidebar.vue'
-  import Footer from '../layouts/Footer.vue'
+
+  import Navbar from '../layouts/Navbar.vue';
+  import Sidebar from '../layouts/Sidebar.vue';
+  import Footer from '../layouts/Footer.vue';
+import roles from "../pages/settings_pages/Roles.vue";
+import notifications from "../pages/settings_pages/Notifications.vue";
+import billingtokens from "../pages/settings_pages/BillingTokens.vue";
+import integrations from "../pages/settings_pages/Integrations.vue";
+import accountsettings from "../pages/settings_pages/AccountSettings.vue";
 
   export default {
     name: 'Settings',
     components: {
       Navbar,
       Sidebar,
-
-      Footer
+      Footer,
+      accountsettings,
+      roles,
+      billingtokens,
+      notifications,
+      integrations,
     },
-
-
-  }
+    data() {
+      return {
+        activeTab: 'accountsettings', // Default active tab
+      };
+    },
+    computed: {
+      activeTabComponent() {
+        return this.activeTab; // Capitalize the first letter for the component name
+      },
+    },
+    methods: {
+      setActiveTab(tab) {
+        this.activeTab = tab; // Set the active tab
+      },
+      isActiveTab(tab) {
+        return this.activeTab === tab; // Check if the tab is active
+      },
+    },
+  };
   </script>
-
-  <script>
-
-</script>
-

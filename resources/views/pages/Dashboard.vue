@@ -27,8 +27,8 @@
         </nav>
         </div>
 <div class="text-left my-8">
-  <h1 class="text-4xl font-bold text-gray-800">{{  getTimeofDay }} {{ firstName }},</h1>
-  <p class="text-lg text-gray-600 mt-2">Have a productive day!</p>
+  <h1 class="text-3xl font-bold text-gray-800">{{  getTimeofDay }} {{ firstName }},</h1>
+  <p class="text-md text-gray-600 mt-2">Have a productive day!</p>
 </div>
 
 
@@ -97,7 +97,6 @@ export default {
   const user = this.getUser;
   if (user) {
     this.firstName = user.name.split(' ')[0];
-    console.log(user.name);
   }
 
   },

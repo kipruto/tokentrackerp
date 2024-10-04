@@ -40,21 +40,22 @@ import { ref } from 'vue';
 <style>
   /* Global styles for your application */
   @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
 
   #mainbody, div {
-    font-family: 'Figtree', sans-serif;
+    font-family: 'Gabarito', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #000000;
     text-transform: none;
   }
 h1, h2, h3, h4, h5, h6, a, p{
-  font-family: 'Figtree', sans-serif;
+  font-family: 'Gabarito', sans-serif;
   color: #000000;
   text-transform: none;
 }
 input{
-  font-family: 'Figtree', sans-serif;
+  font-family: 'Gabarito', sans-serif;
 }
 .error {
   color: red;
