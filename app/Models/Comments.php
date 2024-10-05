@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subtask extends Model
+class Comments extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'task_id',
-        'subtask_name',
-        'status', 
+        'comment',
+        'file_name',
+        'file_url',
     ];
 
     // Define the relationship with Task
@@ -21,3 +22,4 @@ class Subtask extends Model
         return $this->belongsTo(Task::class);
     }
 }
+

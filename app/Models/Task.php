@@ -14,8 +14,6 @@ class Task extends Model
         "assigned_to",
         "budget_allocated",
         "current_status",
-        "file_name",
-        "file_url",
         "created_by",
     ];
 }

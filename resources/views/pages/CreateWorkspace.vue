@@ -115,7 +115,6 @@ export default {
             const wordDCount = this.workspaceDescription.trim().split(/\s+/).length;
 
             if (wordNCount > 20) {
-                c
                 return;
             } else if (wordDCount > 100) {
                 this.workspacedescriptionError = "Workspace description is longer than 100 words. Keep it brief"
