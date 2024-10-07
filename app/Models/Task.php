@@ -9,11 +9,16 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $filliable = [
-        "task_name",
-        "assigned_to",
-        "budget_allocated",
-        "current_status",
-        "created_by",
+    protected $fillable = [
+        'task_name',
+        'assigned_to',
+        'budget_allocated',
+        'current_status',
+        'created_by',
     ];
+
+    public function taskLists()
+    {
+        return $this->hasMany(Subtask::class);
+    }
 }

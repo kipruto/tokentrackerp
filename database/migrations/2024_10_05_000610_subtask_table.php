@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('subtasks', function (Blueprint $table) {
             $table->id(); // Auto-incrementing ID
             $table->unsignedBigInteger('task_id'); // Foreign key referencing tasks table
-            $table->string('subtask_name'); // Name of the subtask
-            $table->boolean('status')->default(false); // Status of the subtask (done or not)
+            $table->string('subtask_name')->nullable();// Name of the subtask
+            $table->boolean('completed')->default(false); // Status of the subtask (completed or not)
             $table->timestamps(); // Created at and updated at timestamps
 
             // Foreign key constraint

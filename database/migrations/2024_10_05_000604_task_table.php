@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('task_name'); // Name of the task
             $table->string('assigned_to'); // User assigned to the task
             $table->decimal('budget_allocated', 8, 2)->nullable(); // Budget allocated
-            $table->enum('current_status', ['pending', 'in_progress', 'completed']); // Status of the task
+            $table->enum('current_status', ['backlog', 'inprogress', 'revision', 'done']); // Status of the task
             $table->unsignedBigInteger('created_by'); // ID of the user who created the task
             $table->timestamps(); // Created at and updated at timestamps
 

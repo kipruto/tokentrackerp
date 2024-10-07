@@ -105,13 +105,10 @@
 </template>
 
 <script>
-
 import Navbar from '../layouts/Navbar.vue';
 import Sidebar from '../layouts/Sidebar.vue';
 import Footer from '../layouts/Footer.vue';
 import TaskModal from "../components/Modal.vue";
-
-
 
 import {
     ref
@@ -129,12 +126,12 @@ export default {
 
     },
 
-    setup(props) {
+    setup() {
         const workspace = ref({});
         const workspace_name = ref("");
         const isModalOpen = ref(false);
-        const openModal = ref(false)
-        const closeModal = ref(false)
+        const openModal = ref(false);
+        const closeModal = ref(false);
 
         return {
             workspace,
@@ -164,11 +161,12 @@ export default {
         },
 
         openModal() {
-            this.isModalOpen = true;
-        },
 
+            this.isModalOpen = true; // Set the modal to open
+
+        },
         closeModal() {
-            this.isModalOpen = false;
+            this.isModalOpen = false; // Set the modal to close
         },
 
     }

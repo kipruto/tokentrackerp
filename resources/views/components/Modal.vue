@@ -2,7 +2,7 @@
 <div v-if="isModalOpen">
     <!-- Background Overlay -->
     <div class="fixed inset-0 bg-gray-800 bg-opacity-50 z-40"></div>
-    <form @submit.prevent="addnewTask">
+
     <!-- Pop-up Modal -->
     <div class="fixed inset-0 flex justify-center items-center z-50">
             <div class="bg-white rounded-lg shadow-lg w-1/3 py-12 px-16 relative z-50">
@@ -11,20 +11,21 @@
                     <button @click="closeModal" class="text-gray-500 hover:text-gray-800"><i class="fad fa-times text-gray-800"></i></button>
                 </div>
                 <!-- Task Name -->
+                 <div>
+                <form @submit.prevent="addnewTask">
                 <div class="mb-4">
                     <label for="taskName" class="block text-sm font-medium text-gray-700">Task Name</label>
                     <input v-model="task_name" type="text" id="taskName" placeholder="Task name" class="w-full p-2 border border-gray-300 rounded-md" />
                 </div>
-
                 <!-- Task Items -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Task Items</label>
                     <div v-for="(item, index) in task_items" :key="index" class="flex items-center space-x-2 mb-2">
-                        <input type="checkbox" v-model="item.done" class="h-4 w-4 text-blue-500 border-gray-300 rounded" />
+                        <input type="checkbox" v-model="item.completed" class="h-4 w-4 text-blue-500 border-gray-300 rounded" />
                         <input v-model="item.name" type="text" placeholder="Task item" class="w-full p-2 border-b border-gray-300 rounded-md" />
-                        <button @click="removeTaskItem(index)" class="rounded-lg"><i class="fad fa-minus text-red-500"></i></button>
+                        <button @click.prevent="removeTaskItem(index)" class="rounded-lg"><i class="fad fa-minus text-red-500"></i></button>
                     </div>
-                    <button @click="addTaskItem" class="bg-blue-500 text-white px-3 py-1 rounded-lg">+ Add Item</button>
+                    <button @click.prevent="addTaskItem" class="bg-blue-500 text-white px-3 py-1 rounded-lg">+ Add Item</button>
                 </div>
 
                 <!-- Assign to Admin -->
@@ -37,8 +38,8 @@
 
                 <!-- Task Budget -->
                 <div class="mb-4">
-                    <label for="budget" class="block text-sm font-medium text-gray-700">Budget Allocated</label>
-                    <input v-model="budget_allocated" type="text" id="budget" placeholder="$50" class="w-full p-2 border border-gray-300 rounded-md" />
+                    <label for="budget" class="block text-sm font-medium text-gray-700">Budget Allocated (KES)</label>
+                    <input v-model="budget_allocated" type="text" id="budget" placeholder="KES." class="w-full p-2 border border-gray-300 rounded-md" />
                 </div>
 
                 <!-- Task Status -->
@@ -65,43 +66,60 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex flex-col space-y-2 w-full mt-5">
-                    <button type="submit" @click="saveTask" class="bg-blue-500 text-white rounded-lg px-4 py-2 w-full">Save Changes</button>
-                    <button @click="closeModal" class=" text-gray-900 rounded-lg px-4 py-2 w-1/3 mx-auto">Cancel</button>
+                <div class="flex flex-col w-full my-5">
+                    <button type="submit" class="bg-blue-500 text-white rounded-lg px-4 py-2 w-full">Save New Task</button>
+                </div>
+                </form>
+                <div class="flex flex-col w-full">
+                    <button @click="closeModal" class=" text-gray-900 rounded-lg px-4 w-1/3 mx-auto">Cancel</button>
                 </div>
             </div>
+            </div>
     </div>
-</form>
 </div>
 </template>
 
 <script>
-import {
-    ref
-} from "vue";
+import { ref, watch } from "vue";
 import axios from 'axios';
 import store from "../../store";
 
 export default {
     name: 'TaskModal',
     props: {
-        isModalOpen: Boolean,
+        isModalOpen: {
+            type: Boolean,
+            required : true,
+        }
+
     },
-    setup() {
+    setup(props, { emit }) {
         const task_name = ref("");
-        const file_name = ref("");
-        const file_url = ref("");
-        const task_items = ref([{
-            name: "",
-            done: false
-        }]);
+        const task_items = ref([{ name: "", completed: false }]);
         const assigned_to = ref("");
         const budget_allocated = ref("");
-        const current_status = ref("");
+        const current_status = ref("backlog");
         const comment = ref("");
         const admins = ref([]);
         const current_user = ref(null);
+
+
+        watch(() => props.isModalOpen, (newVal) => {
+            if (!newVal) {
+                resetForm();
+            }
+        });
+
+        const resetForm = () => {
+            task_name.value = "";
+            task_items.value = [{ name: "", completed: false }];
+            assigned_to.value = "";
+            budget_allocated.value = "";
+            comment.value = "";
+        };
+
         return {
+            current_user,
             task_name,
             task_items,
             assigned_to,
@@ -109,10 +127,9 @@ export default {
             current_status,
             comment,
             admins,
-            file_url,
-            file_name,
-            current_user,
-            store
+            store,
+            resetForm,
+            closeModal: () => emit('close'),
         };
     },
     mounted() {
@@ -136,15 +153,13 @@ export default {
                     budget_allocated: this.budget_allocated,
                     current_status: this.current_status,
                     comment: this.comment,
-                    file_name: this.file_name,
-                    file_url: this.file_url,
                     created_by: this.current_user,
                 });
 
+
                 if (response.status === 200) {
-                    alert("Workspace was created successfully");
-                    closeModal();
-                    location.reload();
+                    alert("Task created successfully");
+                    this.closeModal();
                 }
 
             } catch (error) {
@@ -173,9 +188,6 @@ export default {
                 });
         },
 
-        closeModal(emit) {
-            emit("close");
-        },
 
         addTaskItem() {
             this.task_items.push({
@@ -188,10 +200,7 @@ export default {
             this.task_items.splice(index, 1);
         },
 
-        saveTask() {
-            // Save task logic here
-            this.addnewTask();
-        },
+
 
     }
 };

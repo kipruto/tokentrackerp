@@ -12,7 +12,7 @@ class Subtask extends Model
     protected $fillable = [
         'task_id',
         'subtask_name',
-        'status', 
+        'completed',
     ];
 
     // Define the relationship with Task

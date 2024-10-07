@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Subtask;
@@ -16,25 +16,26 @@ class TaskController extends Controller
 
         $userId = $request->input('assigned_to');
         $finduser = User::find($userId);
+
         if ($finduser) {
-            $assigned_to = $finduser.id;
-            console.log($assigned_to);
+            $assigned_to = $finduser->id;
         }
 
         $validatedData = $request->validate([
             "task_name" => "required|max:255|unique:tasks,task_name",
             "assigned_to" => "required|max:255",
             "budget_allocated" => "numeric|min:0",  //must be a number and >= 0
-            "current_status" => "required|in:pending,in_progress,revision,completed",
+            "current_status" => "required|in:backlog,inprogress,revision,done",
             "comments" => "nullable|array", // should be an array if provided
-            "comments.*" => "string|max:500", // Each comment must be a string with max length 500
-            "file_name" => "nullable|string|max:255", // Optional file name
-            "file_url" => "nullable|url", // Optional URL must be valid
+            "comment" => "string|max:500", // Each comment must be a string with max length 500
             "created_by" => "required|exists:users,id",
 
-            'task_id' => 'required|exists:tasks,id',
-            'comment_text' => 'required|string|max:500',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            // Validate Subtasks
+
+            "task_items" => "nullable|array", // Subtasks can be provided or omitted
+            "task_items.*.name" => "nullable|string|max:255", // Each subtask name is optional
+            "task_items.*.completed" => "boolean", // Each subtask completion status must be a boolean
+
         ]);
 
         $task = Task::create([
@@ -42,57 +43,46 @@ class TaskController extends Controller
             "assigned_to" => $assigned_to,
             "budget_allocated" => $validatedData["budget_allocated"],
             "current_status" => $validatedData["current_status"],
-            "file_name" => $validatedData["file_name"],
-            "file_url" => $validatedData["file_url"],
             "created_by" => $validatedData["created_by"],
         ]);
 
 
-        $subtask = "";
-        if (!empty($request->input('task_list'))) {
-            foreach ($request->input('task_list') as $subtask) {
-                $subtask = $subtask;
+        if (!empty($request->input('task_items'))) {
+            if ($request->has('task_items') && is_array($request->input('task_items'))) {
+                foreach ($request->input('task_items') as $subtask) {
+                    Subtask::create([
+                        'task_id' => $task->id,
+                        'subtask_name' => $subtask['name'] ?? null, // Defaults to null if not provided
+                        'completed' => $subtask['completed'] ?? false, // Defaults to false if not provided
+                    ]);
+                }
             }
         };
 
-        Subtask::create([
-            'task_id' => $task->id,
-            'subtask_name' => $subtask['name'],
-            'status' => $subtask['status'],
-        ]);
 
-        $eachcomment = "";
+        // Handle file upload if present
+        $file_name = null;
+        $file_url = null;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = time() . '_' . $file->getClientOriginalName();
+            $file_url = $file->storeAs('uploads/comments', $file_name, 'public'); // Store in storage/app/public/uploads/comments
+        }
+
         if (!empty($request->input('comments'))) {
             foreach ($request->input('comments') as $comment) {
-                $eachcomment = $comment;
+                Comments::create([
+                    'task_id' => $task->id,
+                    'comment' => $comment,
+                    // 'file_name' => $file_name,
+                    // 'file_url' => $file_url,
+                ]);
             }
         };
-
-        Comments::create([
-            'task_id' => $task->id,
-            'comment' => $eachcomment,
-        ]);
-
-
-    // Handle file upload if present
-    $file_name = null;
-    $file_url = null;
-
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $file_name = time() . '_' . $file->getClientOriginalName();
-        $file_url = $file->storeAs('uploads/comments', $file_name, 'public'); // Store in storage/app/public/uploads/comments
-    }
-
-    // Create a new comment with optional file info
-    Comment::create([
-        'task_id' => $validatedData['task_id'],
-        'comment_text' => $validatedData['comment_text'],
-        'file_name' => $file_name,
-        'file_url' => $file_url,
-    ]);
-
-
+        return response()->json([
+            "message" => "Task created"
+        ], 200);
     }
 
     public function getTaskDetails() {}
