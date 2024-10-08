@@ -59,7 +59,7 @@ class WorkspaceController extends Controller
     {
 
         $workspace = Workspace::find($id);
-
+   
         if (!$workspace) {
             return response()->json(['message' => 'Workspace not found'], 404);
         }

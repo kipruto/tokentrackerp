@@ -19,16 +19,19 @@ class TaskController extends Controller
 
         if ($finduser) {
             $assigned_to = $finduser->id;
+            $assignedto_name = $finduser->name;
         }
 
         $validatedData = $request->validate([
-            "task_name" => "required|max:255|unique:tasks,task_name",
+            "task_title" => "required|max:255|unique:tasks,task_title",
             "assigned_to" => "required|max:255",
+            "assignedto_name" => "required|string|max:255",
             "budget_allocated" => "numeric|min:0",  //must be a number and >= 0
             "current_status" => "required|in:backlog,inprogress,revision,done",
             "comments" => "nullable|array", // should be an array if provided
-            "comment" => "string|max:500", // Each comment must be a string with max length 500
+            "comment" => "nullable|string|max:500", // Each comment must be a string with max length 500
             "created_by" => "required|exists:users,id",
+            'workspace_id' => 'required|integer|exists:workspaces,id',
 
             // Validate Subtasks
 
@@ -39,11 +42,13 @@ class TaskController extends Controller
         ]);
 
         $task = Task::create([
-            "task_name" => $validatedData["task_name"],
+            "task_title" => $validatedData["task_title"],
             "assigned_to" => $assigned_to,
+            "assignedto_name" => $assignedto_name,
             "budget_allocated" => $validatedData["budget_allocated"],
             "current_status" => $validatedData["current_status"],
             "created_by" => $validatedData["created_by"],
+            "workspace_id" => $validatedData["workspace_id"],
         ]);
 
 
@@ -52,7 +57,7 @@ class TaskController extends Controller
                 foreach ($request->input('task_items') as $subtask) {
                     Subtask::create([
                         'task_id' => $task->id,
-                        'subtask_name' => $subtask['name'] ?? null, // Defaults to null if not provided
+                        'subtask_title' => $subtask['title'] ?? null, // Defaults to null if not provided
                         'completed' => $subtask['completed'] ?? false, // Defaults to false if not provided
                     ]);
                 }
@@ -85,7 +90,24 @@ class TaskController extends Controller
         ], 200);
     }
 
-    public function getTaskDetails() {}
+
+
+    public function getTasksByWorkspace($workspace_id){
+
+        $allTasks = Task::with(['subtasks', 'workspace'])->where('workspace_id', $workspace_id)->get()->groupBy('current_status');
+
+        if($allTasks->isEmpty()){
+            return response()->json([
+                "message" => "No tasks found, click button to create new tasks"
+            ], 404);
+        };
+        return response()->json($allTasks);
+
+    }
+
+    public function getTaskDetails() {
+
+    }
 
     public function deleteTask() {}
 

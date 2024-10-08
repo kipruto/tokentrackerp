@@ -19,6 +19,9 @@ Route::get('/fetchadmins', [UserController::class, 'fetchAdmins']);
 
 Route::get('/workspaces/{id}', [WorkspaceController::class, 'getSpecificWorkspace']);
 
+Route::get('/workspaces/{workdspace_id}/tasks', [TaskController::class, 'getTasksByWorkspace']);
+
+
 Route::get('/php-version', function () {
     return response()->json([
         'app_version' => env('APP_VERSION'),

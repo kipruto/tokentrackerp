@@ -32,7 +32,11 @@
                 </nav>
             </div>
             <div class="items-center flex justify-between md:divide-x md:divide-gray-100 dark:divide-gray-700 mb-10">
-                <h1 class="text-xl font-semibold text-gray-900 sm:text-3xl dark:text-white">{{workspace_name}} Workspace</h1>
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-3xl">{{workspace_name}} Workspace</h1>
+                    <p class="text-xs mt-2">{{ workspace_description }}</p>
+
+                </div>
                 <button @click="openModal" id="createTaskButton" class="text-white bg-blue-500 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
                     + Add New Task & Budget
                 </button>
@@ -46,49 +50,139 @@
                         <div class="grid grid-cols-5 gap-2">
                             <!-- Backlog Column -->
                             <div class="bg-kanban p-4 rounded-lg h-screen">
-                                <span class="flex flex-row items-center mb-5">
-                                    <i class="fad fa-circle text-black-500 mr-4"></i>
-                                    <h3 class="text-md font-bold">Backlog</h3>
+                                <span class="flex flex-row items-center mb-5 w-full bg-yellow-500 p-3 rounded">
+                                    <i class="fad fa-circle text-black mr-4"></i>
+                                    <h3 class="text-md font-bold text-black">Backlog</h3>
                                 </span>
-                                <div class="space-y-4 border-t border-gray-300" id="backlogColumn ">
+                                <div class="space-y-4 border-t border-gray-300 pt-8" id="backlogColumn ">
                                     <!-- Task cards will be populated here dynamically -->
+
+                                    <div v-for="task in backlog" class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700" :key="task.id">
+                                        <div class="flex flex-col space-y-3 mb-3 border-b pb-3">
+                                            <h5 class="text-sm font-bold leading-none text-gray-900">{{task.task_title}} </h5>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Subtasks: {{ task.subtasks.length }}
+                                            </p>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Budget: Ksh: {{task.budget_allocated}}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center ">
+                                            <div class="flex-shrink-0">
+                                                <img class="w-7 h-7 rounded-full" src="https://w7.pngwing.com/pngs/490/157/png-transparent-male-avatar-boy-face-man-user-flat-classy-users-icon.png" alt="Lana image">
+                                            </div>
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- In Progress Column -->
                             <div class="bg-kanban p-4 rounded-lg h-screen">
-                                <span class="flex flex-row items-center mb-5">
-                                    <i class="fad fa-circle text-blue-500 mr-4"></i>
-                                    <h3 class="text-md font-bold">In-Progress</h3>
+                                <span class="flex flex-row items-center mb-5 w-full bg-blue-800 p-3 rounded">
+                                    <i class="fad fa-circle text-white mr-4"></i>
+                                    <h3 class="text-md font-bold text-white">In-Progress</h3>
                                 </span>
-                                <div class="space-y-4 border-t border-blue-200" id="inProgressColumn">
+                                <div class="space-y-4 border-t border-blue-200  pt-8" id="inProgressColumn">
                                     <!-- Task cards will be populated here dynamically -->
+
+                                    <div v-for="task in inprogress" class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700" :key="task.id">
+                                        <div class="flex flex-col space-y-3 mb-3 border-b pb-3">
+                                            <h5 class="text-sm font-bold leading-none text-gray-900">{{task.task_title}} </h5>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Subtasks: {{ task.subtasks.length }}
+                                            </p>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Budget: Ksh: {{task.budget_allocated}}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center ">
+                                            <div class="flex-shrink-0">
+                                                <img class="w-7 h-7 rounded-full" src="https://w7.pngwing.com/pngs/490/157/png-transparent-male-avatar-boy-face-man-user-flat-classy-users-icon.png" alt="Lana image">
+                                            </div>
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- Revision Column -->
+                            <div class="bg-kanban p-4 rounded-lg h-screen">
+                                <span class="flex flex-row items-center mb-5 w-full bg-orange-500 p-3 rounded">
+                                    <i class="fad fa-circle text-black mr-4"></i>
+                                    <h3 class="text-md font-bold text-black">Revision</h3>
+                                </span>
+                                <div class="space-y-4 border-t border-red-200 pt-8" id="doneColumn">
+                                    <!-- Task cards will be populated here dynamically -->
+
+                                    <div v-for="task in revision" class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700" :key="task.id">
+                                        <div class="flex flex-col space-y-3 mb-3 border-b pb-3">
+                                            <h5 class="text-sm font-bold leading-none text-gray-900">{{task.task_title}} </h5>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Subtasks: {{ task.subtasks.length }}
+                                            </p>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Budget: Ksh: {{task.budget_allocated}}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center ">
+                                            <div class="flex-shrink-0">
+                                                <img class="w-7 h-7 rounded-full" src="https://w7.pngwing.com/pngs/490/157/png-transparent-male-avatar-boy-face-man-user-flat-classy-users-icon.png" alt="Lana image">
+                                            </div>
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Done Column -->
                             <div class="bg-kanban p-4 rounded-lg h-screen">
-                                <span class="flex flex-row items-center mb-5">
-                                    <i class="fad fa-circle text-red-500 mr-4"></i>
-                                    <h3 class="text-md font-bold">Revision</h3>
+                                <span class="flex flex-row items-center mb-5 w-full bg-green-500 p-3 rounded">
+                                    <i class="fad fa-circle text-white mr-4"></i>
+                                    <h3 class="text-md font-bold text-white">Completed</h3>
                                 </span>
-                                <div class="space-y-4 border-t border-red-200" id="doneColumn">
+                                <div class="space-y-4 border-t border-green-200 pt-8" id="doneColumn">
                                     <!-- Task cards will be populated here dynamically -->
-                                </div>
-                            </div>
-                            <!-- Done Column -->
-                            <div class="bg-kanban p-4 rounded-lg h-screen">
-                                <span class="flex flex-row items-center mb-5">
-                                    <i class="fad fa-circle text-green-500 mr-4"></i>
-                                    <h3 class="text-md font-bold">Done</h3>
-                                </span>
-                                <div class="space-y-4 border-t border-green-200" id="doneColumn">
-                                    <!-- Task cards will be populated here dynamically -->
+
+                                    <div v-for="task in done" class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700" :key="task.id">
+                                        <div class="flex flex-col space-y-3 mb-3 border-b pb-3">
+                                            <h5 class="text-sm font-bold leading-none text-gray-900">{{task.task_title}} </h5>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Subtasks: {{ task.subtasks.length }}
+                                            </p>
+                                            <p class="text-xs text-gray-900 truncate">
+                                                Budget: Ksh: {{task.budget_allocated}}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center ">
+                                            <div class="flex-shrink-0">
+                                                <img class="w-7 h-7 rounded-full" src="https://w7.pngwing.com/pngs/490/157/png-transparent-male-avatar-boy-face-man-user-flat-classy-users-icon.png" alt="Lana image">
+                                            </div>
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
                             <!-- Add New Task Column -->
                             <div class="bg-gray-200 p-4 rounded-lg h-screen flex justify-center items-center cursor-pointer" id="newTaskButton">
-                                <h1 class="text-xl font-bold capitalize text-gray-400">+ NEW TASK</h1>
+                                <h1 class="text-xl font-bold capitalize text-gray-400">+ NEW BOARD</h1>
                             </div>
                         </div>
                     </div>
@@ -109,11 +203,18 @@ import Navbar from '../layouts/Navbar.vue';
 import Sidebar from '../layouts/Sidebar.vue';
 import Footer from '../layouts/Footer.vue';
 import TaskModal from "../components/Modal.vue";
-
+import store from "../../store";
+import {
+    mapMutations,
+    mapActions
+} from 'vuex';
 import {
     ref
 } from 'vue';
 import axios from 'axios';
+import {
+    formatDistanceToNow
+} from 'date-fns';
 
 export default {
     props: ['id', 'workspacename'],
@@ -122,23 +223,40 @@ export default {
         Navbar,
         Sidebar,
         Footer,
-        TaskModal
-
+        TaskModal,
     },
 
     setup() {
         const workspace = ref({});
         const workspace_name = ref("");
+        const workspace_description = ref("");
+        const allTasksByCategory = ref([]);
         const isModalOpen = ref(false);
         const openModal = ref(false);
         const closeModal = ref(false);
+        const {
+            fetchTasks
+        } = mapActions(["fetchTasks"]);
+        const backlog = ref([]); // <-- Make backlog reactive
+        const inprogress = ref([]); // <-- Make inprogress reactive
+        const revision = ref([]); // <-- Make revision reactive
+        const done = ref([]);
+        const workspace_id = ref("");
 
         return {
             workspace,
             workspace_name,
+            workspace_description,
+            allTasksByCategory,
             isModalOpen,
             openModal,
             closeModal,
+            store,
+            backlog,
+            inprogress,
+            revision,
+            done,
+            workspace_id
         }
 
     },
@@ -147,17 +265,55 @@ export default {
     },
     mounted() {
         this.fetchWorkspace(this.id);
+
     },
     methods: {
+        ...mapMutations(['setWorkspaceID']),
+
+        getElapsedTime(date) {
+            return formatDistanceToNow(new Date(date), {
+                addSuffix: false
+            });
+        },
+
         async fetchWorkspace(id) {
             try {
                 const response = await axios.get(`/api/workspaces/${id}`);
                 this.workspace = response.data;
                 this.workspace_name = response.data.workspace_name;
+                this.workspace_description = response.data.workspace_description;
+                this.workspace_id = response.data.id;
+
+                store.dispatch("clearworkspaceid");
+                store.dispatch('setworkspaceid', this.workspace_id)
+                localStorage.setItem('workspaceid', JSON.stringify(this.workspace_id));
+
+                this.fetchallTasks(this.workspace_id);
 
             } catch (error) {
                 console.error('Error fetching workspace:', error);
             }
+        },
+
+        async fetchallTasks(workspace_id) {
+
+            try {
+
+                const response = await axios.get(`/api/workspaces/${workspace_id}/tasks`);
+
+                this.backlog = response.data.backlog
+                console.log(this.backlog);
+                this.inprogress = response.data.inprogress
+                this.revision = response.data.revision
+                this.done = response.data.done
+
+                // Categorize tasks based on their current status
+
+            } catch (error) {
+                console.log('error getting tasks:', error)
+
+            }
+
         },
 
         openModal() {

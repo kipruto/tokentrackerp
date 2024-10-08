@@ -14,8 +14,10 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id(); // Auto-incrementing ID
-            $table->string('task_name'); // Name of the task
-            $table->string('assigned_to'); // User assigned to the task
+            $table->string('task_title'); // Name of the task
+            $table->string('workspace_id'); // Workspace the task belongs to
+            $table->string('assigned_to'); // User id assigned to the task
+            $table->string('assignedto_name'); // User name assigned to the task
             $table->decimal('budget_allocated', 8, 2)->nullable(); // Budget allocated
             $table->enum('current_status', ['backlog', 'inprogress', 'revision', 'done']); // Status of the task
             $table->unsignedBigInteger('created_by'); // ID of the user who created the task
