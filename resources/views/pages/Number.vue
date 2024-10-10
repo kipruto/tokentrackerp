@@ -12,7 +12,7 @@
 
             <div class="flex flex-col">
                 <h1 class="font-semibold"><span class="num-2"></span> My Workspaces </h1>
-                <p class="text-xs"><span class="num-2"></span>4</p>
+                <p class="text-xs"><span class="num-2"></span>{{ get_workspaces.length }}</p>
             </div>
 
         </div>
@@ -28,7 +28,7 @@
             </div>
 
             <div class="flex flex-col">
-                <h1 class="font-semibold"><span class="num-2"></span> Projects</h1>
+                <h1 class="font-semibold"><span class="num-2"></span> Active Tasks</h1>
                 <p class="text-xs"><span class="num-2"></span>3</p>
             </div>
 
@@ -73,3 +73,56 @@
 </div>
 
 </template>
+
+
+<script>
+
+import { mapGetters, mapState , useStore } from 'vuex';
+import { ref } from 'vue';
+
+export default {
+    name: 'Numbers',
+    components: {},
+    setup(){
+
+        const store = useStore();
+        const workspaces = ref([]);
+        const pendingTasks =ref('');
+        const totalHrs = ref('');
+        const approvedTokens = ref('')
+
+        return {
+            store,
+            workspaces,
+            pendingTasks,
+            totalHrs,
+            approvedTokens
+
+        }
+
+
+    },
+    mounted(){
+      
+
+    },
+    computed : {
+
+        ...mapState({
+            get_workspaces : state=>state.workspaces,
+            get_pendingTasks : state=>state.tasks.backlog,
+        })
+
+
+    },
+    methods : {
+
+    }
+
+
+
+}
+
+
+
+</script>

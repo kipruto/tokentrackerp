@@ -81,13 +81,9 @@
 </template>
 
 <script>
-import {
-    ref,
-    watch,
-    computed
-} from "vue";
+import { ref, watch, computed } from "vue";
+import { mapActions, mapGetters, mapState, useStore } from "vuex";
 import axios from 'axios';
-import store from "../../store";
 
 export default {
     name: 'TaskModal',
@@ -101,19 +97,20 @@ export default {
     setup(props, {
         emit
     }) {
+        const store = useStore();
         const task_title = ref("");
         const task_items = ref([{
             name: "",
             completed: false
         }]);
-        const workspace_id = ref("");
+
         const assigned_to = ref("");
         const assignedto_name = ref("");
         const budget_allocated = ref("");
         const current_status = ref("backlog");
         const comment = ref("");
-        const admins = ref([]);
-        const current_user = ref(null);
+        const current_user = ref("");
+        const admins =ref([]);
 
         watch(() => props.isModalOpen, (newVal) => {
             if (!newVal) {
@@ -144,28 +141,44 @@ export default {
             comment,
             admins,
             store,
-            workspace_id,
             resetForm,
             closeModal: () => emit('close'),
         };
 
     },
     mounted() {
-        this.fetchAdmins();
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        this.workspace_id = JSON.parse(localStorage.getItem('workspaceid'));
 
+        this.getAdmins();
+
+        const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             this.current_user = storedUser.id;
         }
 
     },
+
+    computed: {
+
+        ...mapState({
+        workspace_id: state => state.workspace.workspace_id,
+        admins: state => state.admins,
+
+    }),
+
+
+    },
     methods: {
+        ...mapActions(['fetchAdmins', 'fetchTasks']),
+
+        async getAdmins() {
+            await this.store.dispatch('fetchAdmins');
+            this.admins = this.store.state.admins;
+
+        },
 
         async addnewTask() {
 
             try {
-
 
                 const selectedAdmin = this.admins.find(admin => admin.id === this.assigned_to);
 
@@ -184,7 +197,7 @@ export default {
                 if (response.status === 200) {
                     alert("Task created successfully");
                     this.closeModal();
-                    location.reload();
+                    await this.store.dispatch('fetchTasks', this.workspace_id);
                 }
 
             } catch (error) {
@@ -201,16 +214,6 @@ export default {
 
             }
 
-        },
-
-        async fetchAdmins() {
-            await axios.get('/api/fetchadmins')
-                .then(response => {
-                    this.admins = response.data
-                })
-                .catch(error => {
-                    console.error("Error fetching admins:", error);
-                });
         },
 
         addTaskItem() {

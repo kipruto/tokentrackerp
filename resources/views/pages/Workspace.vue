@@ -73,7 +73,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0 ms-4">
                                                 <p class="text-xs text-gray-900 truncate">
-                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                    Assigned to: {{ task.assignedto_name }}
+                                                </p>
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    {{ getElapsedTime(task.created_at) }} ago
                                                 </p>
                                             </div>
                                         </div>
@@ -106,7 +109,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0 ms-4">
                                                 <p class="text-xs text-gray-900 truncate">
-                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                    Assigned to: {{ task.assignedto_name }}
+                                                </p>
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    {{ getElapsedTime(task.created_at) }} ago
                                                 </p>
                                             </div>
                                         </div>
@@ -139,7 +145,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0 ms-4">
                                                 <p class="text-xs text-gray-900 truncate">
-                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                    Assigned to: {{ task.assignedto_name }}
+                                                </p>
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    {{ getElapsedTime(task.created_at) }} ago
                                                 </p>
                                             </div>
                                         </div>
@@ -171,7 +180,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0 ms-4">
                                                 <p class="text-xs text-gray-900 truncate">
-                                                    To: {{ task.assignedto_name }} - ({{ getElapsedTime(task.created_at) }} ago)
+                                                    Assigned to: {{ task.assignedto_name }}
+                                                </p>
+                                                <p class="text-xs text-gray-900 truncate">
+                                                    {{ getElapsedTime(task.created_at) }} ago
                                                 </p>
                                             </div>
                                         </div>
@@ -203,15 +215,15 @@ import Navbar from '../layouts/Navbar.vue';
 import Sidebar from '../layouts/Sidebar.vue';
 import Footer from '../layouts/Footer.vue';
 import TaskModal from "../components/Modal.vue";
-import store from "../../store";
 import {
+    mapState,
     mapMutations,
     mapActions
 } from 'vuex';
 import {
     ref
 } from 'vue';
-import axios from 'axios';
+
 import {
     formatDistanceToNow
 } from 'date-fns';
@@ -227,48 +239,40 @@ export default {
     },
 
     setup() {
-        const workspace = ref({});
-        const workspace_name = ref("");
-        const workspace_description = ref("");
-        const allTasksByCategory = ref([]);
         const isModalOpen = ref(false);
         const openModal = ref(false);
         const closeModal = ref(false);
-        const {
-            fetchTasks
-        } = mapActions(["fetchTasks"]);
-        const backlog = ref([]); // <-- Make backlog reactive
-        const inprogress = ref([]); // <-- Make inprogress reactive
-        const revision = ref([]); // <-- Make revision reactive
-        const done = ref([]);
-        const workspace_id = ref("");
 
         return {
-            workspace,
-            workspace_name,
-            workspace_description,
-            allTasksByCategory,
             isModalOpen,
             openModal,
             closeModal,
-            store,
-            backlog,
-            inprogress,
-            revision,
-            done,
-            workspace_id
         }
-
     },
     computed: {
 
+    ...mapState({
+        workspace_id: state => state.workspace.workspace_id,
+        workspace_name: state => state.workspace.workspace_name,
+        workspace_description: state => state.workspace.workspace_description,
+        backlog: state => state.tasks.backlog,
+        inprogress: state => state.tasks.inprogress,
+        revision: state => state.tasks.revision,
+        done: state => state.tasks.done
+    }),
+
+
     },
     mounted() {
-        this.fetchWorkspace(this.id);
+
+        const workspaceId = this.$route.params.id;
+        this.fetchWorkspace(workspaceId);
+        this.fetchTasks(workspaceId);
 
     },
     methods: {
         ...mapMutations(['setWorkspaceID']),
+        ...mapActions(['fetchWorkspace', 'fetchTasks']),
 
         getElapsedTime(date) {
             return formatDistanceToNow(new Date(date), {
@@ -276,50 +280,8 @@ export default {
             });
         },
 
-        async fetchWorkspace(id) {
-            try {
-                const response = await axios.get(`/api/workspaces/${id}`);
-                this.workspace = response.data;
-                this.workspace_name = response.data.workspace_name;
-                this.workspace_description = response.data.workspace_description;
-                this.workspace_id = response.data.id;
-
-                store.dispatch("clearworkspaceid");
-                store.dispatch('setworkspaceid', this.workspace_id)
-                localStorage.setItem('workspaceid', JSON.stringify(this.workspace_id));
-
-                this.fetchallTasks(this.workspace_id);
-
-            } catch (error) {
-                console.error('Error fetching workspace:', error);
-            }
-        },
-
-        async fetchallTasks(workspace_id) {
-
-            try {
-
-                const response = await axios.get(`/api/workspaces/${workspace_id}/tasks`);
-
-                this.backlog = response.data.backlog
-                console.log(this.backlog);
-                this.inprogress = response.data.inprogress
-                this.revision = response.data.revision
-                this.done = response.data.done
-
-                // Categorize tasks based on their current status
-
-            } catch (error) {
-                console.log('error getting tasks:', error)
-
-            }
-
-        },
-
         openModal() {
-
             this.isModalOpen = true; // Set the modal to open
-
         },
         closeModal() {
             this.isModalOpen = false; // Set the modal to close
