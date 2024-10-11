@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
 
 
 Route::post('/login', [LoginController::class, 'login']);
@@ -14,6 +15,10 @@ Route::post('/createworkspace', [WorkspaceController::class, 'createWorkspace'])
 Route::get('/workspaces', [WorkspaceController::class, 'getWorkspaces']);
 
 Route::post('/createtask', [TaskController::class, 'createTask']);
+
+Route::post('/sendnotification', [NotificationController::class, 'sendNotification']);
+
+Route::get('/fetchnotifications/{user_id}', [NotificationController::class, 'fetchNotifications']);
 
 Route::get('/fetchadmins', [UserController::class, 'fetchAdmins']);
 

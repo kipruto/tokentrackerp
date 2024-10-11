@@ -6,7 +6,6 @@
         <Sidebar />
         <!-- start content -->
         <div class="bg-gray-100 flex-1 p-6 md:mt-16">
-
             <div class="flex" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                     <li class="inline-flex items-center">
@@ -47,7 +46,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
         <!-- end content -->
     </div>
@@ -56,7 +54,6 @@
 </div>
 </template>
 
-
 <script>
 import Navbar from '../layouts/Navbar.vue'
 import Sidebar from '../layouts/Sidebar.vue'
@@ -64,8 +61,13 @@ import Footer from '../layouts/Footer.vue'
 import {
     ref
 } from 'vue';
+import {
+    mapState,
+    mapMutations,
+    mapActions,
+    useStore
+} from 'vuex';
 import axios from 'axios';
-import store from "../../store";
 
 export default {
     name: 'Dashboard',
@@ -73,41 +75,51 @@ export default {
         Navbar,
         Sidebar,
         Footer,
-        store,
     },
 
     setup() {
+        const store = useStore();
         const user = ref("");
         const workspaceName = ref("");
         const workspaceDescription = ref("")
         const workspaceNameError = ref(null);
         const workspacedescriptionError = ref(null);
+        const workspaces = []
 
         return {
             workspaceName,
             workspaceDescription,
             workspaceNameError,
             workspacedescriptionError,
-            user
+            user,
+            store,
         }
+
+    },
+
+    mounted() {
+        this.store.dispatch('fetchWorkspaces').then(() => {
+            this.user = this.store.getters.getUser;
+            this.workspaces = this.store.state.workspaces;
+        });
 
     },
     computed: {
 
     },
-    mounted() {
-        this.user = store.getters.getUser;
-
-    },
     methods: {
 
         async createWorkspace() {
-
             if (this.user.role !== 'superadmin') {
-                console.log(this.user.role);
-                alert("Failed! Sorry only superAdmins are allowed to create workspaces");
+                alert("Failed! Sorry, only superAdmins are allowed to create workspaces");
+                return;
             }
 
+            // Check if the user already has 5 or more workspaces
+            if (this.workspaces.length >= 5) {
+                alert("You have reached the limit of 5 workspaces. You cannot create more.");
+                return;
+            }
             //validate inputs
             this.workspaceNameError = null;
             this.workspacedescriptionError = null;
@@ -120,7 +132,6 @@ export default {
                 this.workspacedescriptionError = "Workspace description is longer than 100 words. Keep it brief"
                 return;
             }
-
             try {
 
                 const response = await axios.post('/api/createworkspace', {
@@ -159,7 +170,6 @@ export default {
 
 }
 </script>
-
 
 <style scoped>
 

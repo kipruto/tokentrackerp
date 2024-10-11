@@ -12,7 +12,7 @@
 
             <div class="flex flex-col">
                 <h1 class="font-semibold"><span class="num-2"></span> My Workspaces </h1>
-                <p class="text-xs"><span class="num-2"></span>{{ get_workspaces.length }}</p>
+                <p class="text-xs"><span class="num-2"></span>{{ workspaces.length }}</p>
             </div>
 
         </div>
@@ -29,7 +29,7 @@
 
             <div class="flex flex-col">
                 <h1 class="font-semibold"><span class="num-2"></span> Active Tasks</h1>
-                <p class="text-xs"><span class="num-2"></span>3</p>
+                <p class="text-xs"><span class="num-2"></span>{{ pendingTasks.length }}</p>
             </div>
 
         </div>
@@ -96,14 +96,21 @@ export default {
             workspaces,
             pendingTasks,
             totalHrs,
-            approvedTokens
+            approvedTokens,
+            workspaces
 
         }
 
 
     },
     mounted(){
-      
+
+        this.store.dispatch('fetchWorkspaces').then(() => {
+            this.workspaces = this.store.state.workspaces;
+            this.pendingTasks = this.store.state.workspace.tasks.backlog;
+
+        });
+
 
     },
     computed : {

@@ -110,6 +110,7 @@ export default {
         const current_status = ref("backlog");
         const comment = ref("");
         const current_user = ref("");
+        const current_username = ref("");
         const admins =ref([]);
 
         watch(() => props.isModalOpen, (newVal) => {
@@ -132,6 +133,7 @@ export default {
 
         return {
             current_user,
+            current_username,
             task_title,
             task_items,
             assigned_to,
@@ -153,6 +155,7 @@ export default {
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             this.current_user = storedUser.id;
+            this.current_username = storedUser.name.split(' ')[0];
         }
 
     },
@@ -197,8 +200,44 @@ export default {
                 if (response.status === 200) {
                     alert("Task created successfully");
                     this.closeModal();
+                    this.sendNotification();
+                    await this.store.dispatch('fetchNotifications')
                     await this.store.dispatch('fetchTasks', this.workspace_id);
                 }
+
+            } catch (error) {
+                if (error.response) {
+                    console.error("Error Response:", error.response);
+                    alert(`Server Error: ${error.response.data.message || 'Something went wrong!'}`);
+                } else if (error.request) {
+                    console.error("Error Request:", error.request);
+                    alert("No response from server. Please try again.");
+                } else {
+                    console.error("Error Message:", error.message);
+                    alert(`Error: ${error.message}`);
+                }
+
+            }
+
+        },
+
+        async sendNotification(){
+
+            try {
+                const response = await axios.post('/api/sendnotification', {
+                    from : this.current_username,
+                    to_userid:this.assigned_to,
+                    title : "assigned you a new task",
+                    budget_allocated : this.budget_allocated,
+                    message: "Budget amount- ",
+                    task_id: this.task_id,
+                    workspace_id:this.workspace_id,
+                    links:`/api/${this.workspace_id}/tasks/${this.task_id}`
+            });
+
+            if(response.status == 200){
+                console.log('Notification Sent')
+            }
 
             } catch (error) {
                 if (error.response) {

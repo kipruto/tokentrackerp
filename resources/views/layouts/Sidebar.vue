@@ -6,7 +6,7 @@
         <!-- sidebar toggle -->
         <div class="text-right hidden md:block mb-4">
             <button id="sideBarHideBtn">
-                <i class="fad fa-times-circle"></i>
+                <i class="fas fa-times-circle"></i>
             </button>
         </div>
         <!-- end sidebar toggle -->
@@ -15,7 +15,7 @@
         </p>
         <!-- link -->
         <a href="/dashboard" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-chart-pie text-md mr-2"></i>
+            <i class="fas fa-chart-pie text-md mr-2"></i>
             dashboard
         </a>
         <!-- end link -->
@@ -27,7 +27,7 @@
         <!-- link -->
         <li v-for="workspace in workspaces" :key="workspace.id" class="list-none">
             <router-link :to="{ name: 'workspace', params: { id: workspace.id }, props: { workspace_name: workspace.workspace_name }}" class="my-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-                <i class="fad fa-folder text-md mr-2"></i>
+                <i class="fas fa-folder text-md mr-2"></i>
                 {{ workspace.workspace_name }}
             </router-link>
         </li>
@@ -42,12 +42,12 @@
 
         <!-- link -->
         <a href="/timesheets" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-history text-md mr-2"></i>timesheets
+            <i class="fas fa-history text-md mr-2"></i>timesheets
         </a>
         <!-- end link -->
         <!-- link -->
         <a href="/invoices" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-file-invoice-dollar text-md mr-2"></i>
+            <i class="fas fa-file-invoice-dollar text-md mr-2"></i>
             invoices
         </a>
         <!-- end link -->
@@ -56,21 +56,21 @@
         </p>
         <!-- link -->
         <a href="/wallet" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-usd-circle mr-2"></i>
+            <i class="fas fa-usd-circle mr-2"></i>
             My Wallet
         </a>
         <!-- end link -->
-         
+
         <!-- link -->
         <a href="/mynotes" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-shield-check text-md mr-2"></i>
+            <i class="fas fa-shield-check text-md mr-2"></i>
             my notes
         </a>
         <!-- end link -->
 
         <!-- link -->
         <a href="/calendar" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-calendar-edit text-md mr-2"></i>
+            <i class="fas fa-calendar-edit text-md mr-2"></i>
             calendar
         </a>
         <!-- end link -->
@@ -79,7 +79,7 @@
             Settings
         </p>
         <a href="/settings" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
-            <i class="fad fa-cog text-md mr-2"></i>
+            <i class="fas fa-cog text-md mr-2"></i>
             Settings
         </a>
     </div>

@@ -50,7 +50,7 @@ import {
     ref
 } from 'vue';
 import {
-    mapMutations
+    mapMutations, mapActions
 } from 'vuex';
 import {
     useRouter
@@ -95,6 +95,7 @@ export default {
     },
     methods: {
         ...mapMutations(['setUser']),
+        ...mapActions(['fetchNotifications']),
 
         user() {
             return this.getUser;

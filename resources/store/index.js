@@ -1,90 +1,95 @@
 // store/index.js
 import { createStore } from "vuex";
-import axios from 'axios';
+import axios from "axios";
 
 export default createStore({
     state: {
-        user: null, // Store the logged-in user's info
+        user: null,
+        admins: [],
         workspace: {
             workspace_id: null,
             workspace_name: null,
             workspace_description: null,
             access_token: null,
-        },
-        tasks: {
-            backlog : [],
-            inprogress : [],
-            revision : [],
-            done : []
-        },
-        taskForm: {
-            task_title: "",
-            task_items: [{ name: "", completed: false }],
-            assigned_to: "",
-            assignedto_name: "",
-            budget_allocated: "",
-            current_status: "backlog",
-            comment: ""
-        },
-        admins: [],
-        workspaces: []
-    },
-    mutations: {
 
-        setUser(state, user) {
-            state.user = user;
-        },
+            tasks: {
+                backlog: [],
+                inprogress: [],
+                revision: [],
+                done: [],
+            },
 
-        fetchWorkspace(state, workspace){
-            state.workspace.workspace_id = workspace.id;
-            state.workspace.workspace_name = workspace.workspace_name;
-            state.workspace.workspace_description = workspace.workspace_description;
-            state.workspace.access_token = workspace.access_token;
-        },
-        fetchWorkspaces(state, workspaces){
-            state.workspaces = workspaces;
-        },
-        setTasks(state, tasks) {
-            state.tasks.backlog = tasks.backlog;
-            state.tasks.inprogress = tasks.inprogress;
-            state.tasks.revision = tasks.revision;
-            state.tasks.done = tasks.done;
-        },
-        clearTasks(state){
-            state.tasks =  {
-                backlog : [],
-                inprogress : [],
-                revision : [],
-                done : []
-            };
-        },
-        setTaskTitle(state, task_title) {
-            state.taskForm.task_title = task_title;
-        },
-        setTaskItems(state, task_items) {
-            state.taskForm.task_items = task_items;
-        },
-        setAssignedTo(state, assigned_to) {
-            state.taskForm.assigned_to = assigned_to;
-        },
-        setBudgetAllocated(state, budget_allocated) {
-            state.taskForm.budget_allocated = budget_allocated;
-        },
-        setCurrentStatus(state, current_status) {
-            state.taskForm.current_status = current_status;
-        },
-        setComment(state, comment) {
-            state.taskForm.comment = comment;
-        },
-        resetTaskForm(state) {
-            state.taskForm = {
+            taskForm: {
                 task_title: "",
                 task_items: [{ name: "", completed: false }],
                 assigned_to: "",
                 assignedto_name: "",
                 budget_allocated: "",
                 current_status: "backlog",
-                comment: ""
+                comment: "",
+            },
+            notifications: [],
+        },
+    },
+    mutations: {
+        setUser(state, user) {
+            state.user = user;
+        },
+        fetchWorkspace(state, workspace) {
+            state.workspace.workspace_id = workspace.id;
+            state.workspace.workspace_name = workspace.workspace_name;
+            state.workspace.workspace_description = workspace.workspace_description;
+            state.workspace.access_token = workspace.access_token;
+        },
+        fetchWorkspaces(state, workspaces) {
+            state.workspaces = workspaces;
+        },
+        setTasks(state, tasks) {
+            state.workspace.tasks.backlog = tasks.backlog;
+            state.workspace.tasks.inprogress = tasks.inprogress;
+            state.workspace.tasks.revision = tasks.revision;
+            state.workspace.tasks.done = tasks.done;
+        },
+
+        setNotifications(state, notifications) {
+            state.workspace.notifications = notifications;
+        },
+
+        clearTasks(state) {
+            state.tasks = {
+                backlog: [],
+                inprogress: [],
+                revision: [],
+                done: [],
+            };
+        },
+        setTaskTitle(state, task_title) {
+            state.workspace.taskForm.task_title = task_title;
+        },
+        setTaskItems(state, task_items) {
+            state.workspace.taskForm.task_items = task_items;
+        },
+        setAssignedTo(state, assigned_to) {
+            state.workspace.taskForm.assigned_to = assigned_to;
+        },
+        setBudgetAllocated(state, budget_allocated) {
+            state.workspace.taskForm.budget_allocated = budget_allocated;
+        },
+        setCurrentStatus(state, current_status) {
+            state.workspace.taskForm.current_status = current_status;
+        },
+        setComment(state, comment) {
+            state.workspace.taskForm.comment = comment;
+        },
+        resetTaskForm(state) {
+            state.workspace.taskForm = {
+                task_title: "",
+                task_items: [{ name: "", completed: false }],
+                assigned_to: "",
+                assignedto_name: "",
+                budget_allocated: "",
+                current_status: "backlog",
+                comment: "",
             };
         },
         setAdmins(state, admins) {
@@ -93,7 +98,6 @@ export default createStore({
         clearUser(state) {
             state.user = null; // Clear the user info (for logout, etc.)
         },
-
     },
     actions: {
         login({ commit }, user) {
@@ -104,24 +108,23 @@ export default createStore({
             commit("clearUser"); // Call the clearUser mutation
         },
 
-        async fetchWorkspace({commit}, id){
+        async fetchWorkspace({ commit }, id) {
             try {
                 const response = await axios.get(`/api/workspaces/${id}'`);
                 commit("fetchWorkspace", response.data);
             } catch (error) {
-                console.log('Error getting the workspace:', error);
+                console.log("Error getting the workspace:", error);
             }
         },
 
-        async fetchWorkspaces({commit}){
+        async fetchWorkspaces({ commit }) {
             try {
-                const response = await axios('/api/workspaces')
-                commit('fetchWorkspaces', response.data)
+                const response = await axios("/api/workspaces");
+                commit("fetchWorkspaces", response.data);
             } catch (error) {
-                console.log('Error getting workspaces:', error);
+                console.log("Error getting workspaces:", error);
             }
         },
-
         async fetchTasks({ commit }, workspaceId) {
             try {
                 const response = await axios.get(
@@ -133,26 +136,30 @@ export default createStore({
             }
         },
 
+        startPolling({ dispatch, state }) {
+            setInterval(() => {
+              dispatch('fetchNotifications', state.user.id); // Pass userId from the Vuex state
+            }, 6000); // Poll every 60 seconds
+          },
+
+        async fetchNotifications({ commit }, user_id) {
+            try {
+                const response = await axios.get(`/api/fetchnotifications/${user_id}`);
+                commit("setNotifications", response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
+        },
+
         async fetchAdmins({ commit }) {
             try {
-                const response = await axios.get('/api/fetchadmins');
-                commit('setAdmins', response.data);
+                const response = await axios.get("/api/fetchadmins");
+                commit("setAdmins", response.data);
             } catch (error) {
                 console.error("Error fetching admins:", error);
             }
         },
-
-
-        async createTask({ commit }, taskData) {
-            try {
-                const response = await axios.post('/api/createtask', taskData);
-                commit('setTasks', response.data);
-            } catch (error) {
-                console.error("Error creating task:", error);
-                throw error;
-            }
-        }
-
 
     },
     getters: {

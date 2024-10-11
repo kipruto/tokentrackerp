@@ -255,11 +255,13 @@ export default {
         workspace_id: state => state.workspace.workspace_id,
         workspace_name: state => state.workspace.workspace_name,
         workspace_description: state => state.workspace.workspace_description,
-        backlog: state => state.tasks.backlog,
-        inprogress: state => state.tasks.inprogress,
-        revision: state => state.tasks.revision,
-        done: state => state.tasks.done
+        backlog: state => state.workspace.tasks.backlog,
+        inprogress: state => state.workspace.tasks.inprogress,
+        revision: state => state.workspace.tasks.revision,
+        done: state => state.workspace.tasks.done,
     }),
+
+
 
 
     },
@@ -270,6 +272,12 @@ export default {
         this.fetchTasks(workspaceId);
 
     },
+    watch: {
+    '$route.params.id': function(newId) {
+        this.fetchWorkspace(newId);
+        this.fetchTasks(newId);
+    }
+},
     methods: {
         ...mapMutations(['setWorkspaceID']),
         ...mapActions(['fetchWorkspace', 'fetchTasks']),
