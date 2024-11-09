@@ -52,14 +52,19 @@
 </template>
 
 <script>
-import Navbar from '../layouts/Navbar.vue'
-import Sidebar from '../layouts/Sidebar.vue'
-import Footer from '../layouts/Footer.vue'
-import Numbers from '../pages/Number.vue'
-import ProjectOverview from '../pages/ProjectOverview.vue'
-import { mapGetters, mapState , useStore } from 'vuex';
-import { ref } from 'vue';
-
+import Navbar from '../components/partials/Navbar.vue'
+import Sidebar from '../components/partials/Sidebar.vue'
+import Footer from '../components/partials/Footer.vue'
+import Numbers from './Number.vue'
+import ProjectOverview from './ProjectOverview.vue'
+import {
+    mapGetters,
+    mapState
+} from 'vuex';
+import {
+    ref
+} from 'vue';
+import store from '../../store';
 
 export default {
     name: 'Dashboard',
@@ -73,7 +78,6 @@ export default {
 
     setup() {
 
-        const store =  useStore();
         const firstName = ref(null);
 
         return {
@@ -82,10 +86,9 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getUser']),
-        getfirstName() {
-            return this.getUser
-        },
+        ...mapState({
+            workspaces: state => state.workspaces
+        }),
         getTimeofDay() {
             const hour = new Date().getHours();
             if (hour < 12) {
@@ -100,22 +103,13 @@ export default {
     },
     mounted() {
         this.store.dispatch('fetchWorkspaces');
-
-        const user = this.getUser;
-        if (user) {
-            this.firstName = user.name.split(' ')[0];
-        }
-
-    },
-    computed: {
-        ...mapState({
-            workspaces: state => state.workspaces
-        })
+        const user = this.$store.state.user;
+    if (user && user.name) {
+        this.firstName = user.name.split(' ')[0];
+    }
     },
 
     methods: {
-
-
 
     }
 

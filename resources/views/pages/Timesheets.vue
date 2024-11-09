@@ -123,11 +123,11 @@
 </template>
 
 <script>
-import Navbar from '../layouts/Navbar.vue'
-import Sidebar from '../layouts/Sidebar.vue'
-import Footer from '../layouts/Footer.vue'
-import Numbers from '../pages/Number.vue'
-import ProjectOverview from '../pages/ProjectOverview.vue'
+import Navbar from '../components/partials/Navbar.vue'
+import Sidebar from '../components/partials/Sidebar.vue'
+import Footer from '../components/partials/Footer.vue'
+import Numbers from './Number.vue'
+import ProjectOverview from './ProjectOverview.vue'
 import { mapGetters } from 'vuex';
 import { ref } from 'vue';
 

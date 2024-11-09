@@ -5,6 +5,7 @@ import axios from "axios";
 export default createStore({
     state: {
         user: null,
+        isLoggedIn: false,
         admins: [],
         workspace: {
             workspace_id: null,
@@ -34,6 +35,8 @@ export default createStore({
     mutations: {
         setUser(state, user) {
             state.user = user;
+            state.user = user;
+            state.isLoggedIn = !!user;
         },
         fetchWorkspace(state, workspace) {
             state.workspace.workspace_id = workspace.id;
@@ -95,17 +98,18 @@ export default createStore({
         setAdmins(state, admins) {
             state.admins = admins;
         },
-        clearUser(state) {
-            state.user = null; // Clear the user info (for logout, etc.)
+        logout(state) {
+            state.user = null;
+            state.isLoggedIn = false;
         },
     },
     actions: {
         login({ commit }, user) {
-            commit("setUser", user); // Set the user after successful login
+            commit("setUser", user);
         },
 
         logout({ commit }) {
-            commit("clearUser"); // Call the clearUser mutation
+            commit("logout");
         },
 
         async fetchWorkspace({ commit }, id) {
@@ -146,7 +150,6 @@ export default createStore({
             try {
                 const response = await axios.get(`/api/fetchnotifications/${user_id}`);
                 commit("setNotifications", response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error("Error fetching notifications:", error);
             }
@@ -168,5 +171,6 @@ export default createStore({
         getUser: (state) => state.user,
         getAdmins: (state) => state.admins,
         getWorkspaceID: (state) => state.workspace.workspace_id,
+       isSuperAdmin: (state) => state.isLoggedIn && state.user?.role === 'superadmin'
     },
 });

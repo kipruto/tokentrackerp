@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Subtask;
-use App\Models\Comments;
+use App\Models\Taskinstructions;
 use App\Models\User;
 
 class TaskController extends Controller
@@ -24,11 +24,8 @@ class TaskController extends Controller
 
         $validatedData = $request->validate([
             "task_title" => "required|max:255|unique:tasks,task_title",
-            "assigned_to" => "required|max:255",
-            "assignedto_name" => "required|string|max:255",
-            "budget_allocated" => "numeric|min:0",  //must be a number and >= 0
-            "current_status" => "required|in:backlog,inprogress,revision,done",
-            "comments" => "nullable|array", // should be an array if provided
+
+            "taskinstructions" => "nullable|array",
             "comment" => "nullable|string|max:500", // Each comment must be a string with max length 500
             "created_by" => "required|exists:users,id",
             'workspace_id' => 'required|integer|exists:workspaces,id',
@@ -65,23 +62,11 @@ class TaskController extends Controller
         };
 
 
-        // Handle file upload if present
-        $file_name = null;
-        $file_url = null;
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $file_name = time() . '_' . $file->getClientOriginalName();
-            $file_url = $file->storeAs('uploads/comments', $file_name, 'public'); // Store in storage/app/public/uploads/comments
-        }
-
-        if (!empty($request->input('comments'))) {
-            foreach ($request->input('comments') as $comment) {
-                Comments::create([
+        if (!empty($request->input('taskinstructions'))) {
+            foreach ($request->input('taskinstructions') as $taskinstruction) {
+                Taskinstructions::create([
                     'task_id' => $task->id,
-                    'comment' => $comment,
-                    // 'file_name' => $file_name,
-                    // 'file_url' => $file_url,
+                    'taskinstruction' => $taskinstruction,
                 ]);
             }
         };

@@ -55,9 +55,9 @@
 </template>
 
 <script>
-import Navbar from '../layouts/Navbar.vue'
-import Sidebar from '../layouts/Sidebar.vue'
-import Footer from '../layouts/Footer.vue'
+import Navbar from '../components/partials/Navbar.vue'
+import Sidebar from '../components/partials/Sidebar.vue'
+import Footer from '../components/partials/Footer.vue'
 import {
     ref
 } from 'vue';

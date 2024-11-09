@@ -9,7 +9,7 @@
         <!-- start content -->
         <div class="bg-gray-50 flex-1 p-6 md:mt-16">
 
-            <div class="mx-4 min-h-screen max-w-screen-xl sm:mx-8 xl:mx-auto bg-white px-20 py-10 shadow-md rounded-md">
+            <div class="mx-4 min-h-screen max-w-screen-xl sm:mx-8 xl:mx-auto bg-white px-20 py-10 card">
               <h1 class="border-b py-6 text-3xl font-semibold">Settings</h1>
               <div class="grid grid-cols-8 pt-3 sm:grid-cols-10">
                 <div class="col-span-8 overflow-hidden rounded-xl  sm:px-8 sm:shadow">
@@ -44,14 +44,18 @@
 
   <script>
 
-  import Navbar from '../layouts/Navbar.vue';
-  import Sidebar from '../layouts/Sidebar.vue';
-  import Footer from '../layouts/Footer.vue';
+import Navbar from '../components/partials/Navbar.vue'
+import Sidebar from '../components/partials/Sidebar.vue'
+import Footer from '../components/partials/Footer.vue'
+import EditUserModal from "../components/modals/EditUserModal.vue";
+import AddUserModal from "../components/modals/AddUserModal.vue";
+import DeletConfirmationModal from "../components/modals/DeleteConfirmationModal.vue";
 import roles from "../pages/settings_pages/Roles.vue";
-import notifications from "../pages/settings_pages/Notifications.vue";
-import billingtokens from "../pages/settings_pages/BillingTokens.vue";
-import integrations from "../pages/settings_pages/Integrations.vue";
-import accountsettings from "../pages/settings_pages/AccountSettings.vue";
+import notifications from "./settings_pages/Notifications.vue";
+import billingtokens from "./settings_pages/BillingTokens.vue";
+import integrations from "./settings_pages/Integrations.vue";
+import accountsettings from "./settings_pages/AccountSettings.vue";
+
 
   export default {
     name: 'Settings',

@@ -23,6 +23,12 @@
                                         <button id="loginButton" class="w-full mt-4 bg-blue-800 hover:bg-blue-900 text-white font-bold font-heading py-3 rounded-md uppercase" type="submit">
                                             SUBMIT
                                         </button>
+                                        <button
+                                        class="w-full mt-4 flex items-center justify-center bg-black text-white py-3 rounded-md hover:bg-gray-900 transition duration-300 "
+                                      >
+                                      <i class="fad brands-google"></i>
+                                        Continue with Google
+                                      </button>
                                     </form>
                                 </div>
                             </div>
