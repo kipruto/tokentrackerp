@@ -11,12 +11,17 @@ class Project extends Model
 
     protected $fillable = [
         'project_name',
-        'start_date' ,
-        'client_name',
+        'start_date',
         'deadline',
-        'status'
+        'status',
+        'client_id',
+        'project_type',
     ];
-
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+    
     public function employees()
     {
         return $this->belongsToMany(Employee::class, 'employee_project');

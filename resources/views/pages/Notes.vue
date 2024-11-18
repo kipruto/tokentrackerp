@@ -1,11 +1,12 @@
 <template>
-<div>
-    <Navbar />
+    <div class="h-[100vh] flex flex-col w-full relative overflow-hidden bg-transparent">
+        <div class="w-[10%]">
+            <Sidebar class=" fixed top-0 shadow" />
+        </div>
 
-    <!-- start content -->
-    <div class="h-screen flex flex-row flex-wrap bg-gray-100">
-        <Sidebar />
-        <div class="flex-1 my-8 mx-auto p-6 bg-white card max-w-[83%] ">
+    <div class="w-[80%] ml-[18%] bg-transparent">
+        <Navbar class="h-16" />
+        <div class="flex-1 my-8 mx-auto p-6 bg-white card max-w-[95%] shadow-md min-h-[80vh]">
             <h2 class="text-3xl leading-tight text-gray-900 mb-1.5 font-bold mt-10 ml-20">Sticky Notes</h2>
             <div class="w-full grid grid-cols-2 gap-x-10 py-10 px-20 mx-auto">
                 <!-- Left Column-->

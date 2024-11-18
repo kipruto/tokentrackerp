@@ -14,9 +14,9 @@ class CreateProjectsTable extends Migration
             $table->string('client_name');
             $table->date('start_date');
             $table->date('deadline');
-            $table->enum('status', ['Active', 'Inactive', 'Completed', 'Cancelled']);
+            $table->enum('project_type', ['Internal', 'External']);
+            $table->enum('status', ['Incoming', 'In progress', 'On hold', 'Completed', 'Cancelled']); 
             $table->timestamps();
-
         });
     }
 

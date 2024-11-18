@@ -1,14 +1,12 @@
 <template>
-<div>
-    <Navbar />
+<div class="h-[100vh] flex flex-col w-full relative overflow-hidden bg-transparent">
+    <div class="w-[10%]">
+        <Sidebar class=" fixed top-0 shadow" />
+    </div>
 
-    <!-- Page Content -->
-    <div class="h-screen flex flex-row flex-wrap bg-gray-100">
-        <Sidebar />
-        <div class="flex-1 max-w-7xl mx-auto mt-16 bg-white card h-[80vh]">
-
-
-            <!-- Grid Layout -->
+    <div class="w-[80%] ml-[18%] bg-transparent">
+        <Navbar class="h-16" />
+        <div class="flex-1 my-8 mx-auto p-6  bg-white card max-w-[95%] shadow-md min-h-[80vh]">
             <div class="w-full grid grid-cols-2 gap-10 p-20 mx-auto">
 
                 <!-- Left Column - Encouraging Text -->
@@ -24,7 +22,7 @@
 
                 <!-- Right Column - Complaint Submission Form -->
                 <div class="card p-8">
-                    <h2 class="text-xl mb-4 font-bold">Submit a Complaint</h2>
+                    <h2 class="text-xl mb-4 font-bold ml-5">Fill the form</h2>
                     <form @submit.prevent="submitComplaint" class="bg-white p-6 rounded-lg space-y-4">
 
                         <!-- Nature of Complaint -->
@@ -77,7 +75,6 @@
 </div>
 </template>
 
-
 <script>
 import Navbar from '../components/partials/Navbar.vue'
 import Sidebar from '../components/partials/Sidebar.vue'
@@ -122,7 +119,6 @@ export default {
     },
 };
 </script>
-
 
 <style scoped>
 /* Optional: Add any custom styles here */

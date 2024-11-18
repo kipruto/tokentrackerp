@@ -1,16 +1,14 @@
 <template>
-    <div>
-      <Navbar />
+    <div class="h-[100vh] flex flex-col w-full relative overflow-hidden bg-transparent">
+        <div class="w-[10%]">
+            <Sidebar class=" fixed top-0 shadow" />
+        </div>
 
-      <!-- start wrapper -->
-      <div class="h-screen flex flex-row flex-wrap">
-        <Sidebar />
-
-        <!-- start content -->
-        <div class="bg-gray-50 flex-1 p-6 md:mt-16">
-
-            <div class="mx-4 min-h-screen max-w-screen-xl sm:mx-8 xl:mx-auto bg-white px-20 py-10 shadow-md rounded-md">
-              <h1 class="border-b py-6 text-3xl font-semibold">Settings</h1>
+    <div class="w-[80%] ml-[18%] bg-transparent">
+        <Navbar class="h-16" />
+        <div class="flex-1 my-8 mx-auto p-6  bg-white card max-w-[95%] shadow-md min-h-screen">
+            <div class="px-20">
+              <h1 class="border-b py-6 text-3xl font-semibold">Messages</h1>
               <div class="grid grid-cols-8 pt-3 sm:grid-cols-10">
                 <div class="col-span-8 overflow-hidden rounded-xl  sm:px-8 sm:shadow">
                 <!-- Render settings pages here -->
@@ -32,14 +30,12 @@
                 </div>
               </div>
             </div>
-
         </div>
+        </div>
+        <Footer />
         <!-- end content -->
       </div>
       <!-- end wrapper -->
-
-      <Footer />
-    </div>
   </template>
 
   <script>
@@ -47,14 +43,15 @@
 import Navbar from '../components/partials/Navbar.vue'
 import Sidebar from '../components/partials/Sidebar.vue'
 import Footer from '../components/partials/Footer.vue'
-import roles from "../pages/settings_pages/Roles.vue";
-import notifications from "../pages/settings_pages/Notifications.vue";
-import billingtokens from "../pages/settings_pages/BillingTokens.vue";
-import integrations from "../pages/settings_pages/Integrations.vue";
-import accountsettings from "../pages/settings_pages/AccountSettings.vue";
 import EditUserModal from "../components/modals/EditUserModal.vue";
 import AddUserModal from "../components/modals/AddUserModal.vue";
 import DeletConfirmationModal from "../components/modals/DeleteConfirmationModal.vue";
+import roles from "../pages/settings_pages/Roles.vue";
+import notifications from "./settings_pages/Notifications.vue";
+import billingtokens from "./settings_pages/BillingTokens.vue";
+import integrations from "./settings_pages/Integrations.vue";
+import accountsettings from "./settings_pages/AccountSettings.vue";
+
 
   export default {
     name: 'Settings',

@@ -7,9 +7,10 @@
 
   <script>
   import { onMounted, ref } from 'vue';
-  import { Chart, ArcElement } from 'chart.js';
+  import { Chart, DoughnutController, ArcElement, Tooltip } from 'chart.js';
 
-  Chart.register(ArcElement);
+  // Register required components
+  Chart.register(DoughnutController, ArcElement, Tooltip);
 
   export default {
     props: {
@@ -33,11 +34,11 @@
             ],
           },
           options: {
-            circumference: 180,
-            rotation: -90,
-            cutout: '70%',
+            circumference: 180, // Arc-shaped chart
+            rotation: -90, // Start from the top
+            cutout: '70%', // Inner hole size
             plugins: {
-              tooltip: { enabled: false },
+              tooltip: { enabled: false }, // Disable tooltips
             },
           },
         });

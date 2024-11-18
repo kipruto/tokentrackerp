@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <Navbar />
+    <div class="h-[100vh] flex flex-col w-full relative overflow-hidden bg-transparent">
+        <div class="w-[10%]">
+            <Sidebar class=" fixed top-0 shadow" />
+        </div>
 
-    <!-- start wrapper -->
-    <div class="h-screen flex flex-row flex-wrap bg-gray-100">
-      <Sidebar />
-      <!-- start content -->
-      <div class=" flex-1 my-8 max-w-[83%] mx-auto card">
+    <div class="w-[80%] ml-[18%] bg-transparent">
+        <Navbar class="h-16" />
+        <div class="flex-1 my-8 mx-auto p-6 bg-white card max-w-[95%] shadow-md min-h-[80vh]">
         <div class="relative bg-white">
-            <div class="w-full pt-24 relative z-10 backdrop-blur-3xl">
-                <div class="grid grid-cols-2 gap-8 max-w-7xl mx-auto xl:max-w-full">
-                  <div class="col-span-1 xl:col-span-5">
+            <div class="w-full pt-10 relative z-10 backdrop-blur-3xl">
+                <div class="grid grid-cols-2 gap-8 mx-auto ">
+                  <div class="col-span-1 xl:col-span-5 px-20">
                     <h2 class="text-3xl leading-tight text-gray-900 mb-1.5 font-bold">See Upcoming Events</h2>
                     <p class="text-lg font-normal text-gray-600 mb-8">Don’t miss your schedule</p>
                     <div class="flex gap-5 flex-col">

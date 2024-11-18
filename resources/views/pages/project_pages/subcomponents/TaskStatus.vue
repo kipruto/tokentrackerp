@@ -1,5 +1,5 @@
 <template>
-<div class="rounded-lg text-left px-20 py-6" :style="{ backgroundColor: getColorByIndex(index) }">
+<div class="rounded-lg text-left px-10 py-6" :style="{ backgroundColor: getColorByIndex(index) }">
     <h3 class="text-white font-semibold">{{ label }}</h3>
     <p class="text-4xl font-bold text-white">
         {{ count }}

@@ -1,18 +1,13 @@
 <template>
-<div class="bg-gray-100">
-    <div class="md:fixed md:w-full md:top-0 md:z-20 flex items-center bg-white p-6 border-b border-gray-300">
-        <!-- Logo -->
-        <div class="flex-none w-56 flex items-center">
-            <img :src="logo" class="w-10" />
-            <strong class="capitalize ml-2">TokenTrackerERP</strong>
-        </div>
+<div class=" z-20 bg-transparent rounded-md  w-full mx-auto h-auto">
+    <div class=" flex items-center justify-between p-4">
 
         <!-- Navbar Content -->
-        <div class="flex-grow flex items-center justify-between ml-6">
+        <div class="flex-grow flex items-center justify-between ml-6 ">
 
             <!-- Search Box -->
             <div class="flex-grow mr-4">
-                <input type="text" placeholder="Search..." class="px-4 py-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 border-gray-200" />
+                <input type="text" placeholder="Search..." class="rounded-full px-4 py-2 w-full border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 border-gray-200" />
             </div>
 
             <!-- Date and Time Display -->
@@ -22,8 +17,8 @@
 
             <!-- Check-in Button with Timer -->
             <div class="flex items-center space-x-2">
-                <button @click="toggleCheckin" class="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <i class="fas fa-power-off mr-2"></i> {{ checkinText }}
+                <button @click="toggleCheckin" class="inline-flex  items-center px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition focus:outline-none">
+                    <span class="mb-1"><i class="fas fa-power-off mr-2"></i> {{ checkinText }}</span>
                 </button>
                 <div v-if="isCheckedIn" class="text-blue-500 font-bold">{{ elapsedTime }}</div>
             </div>
@@ -68,7 +63,6 @@
 
 <script>
 import dayjs from "dayjs";
-import logo from "../../../../public/images/logo.png";
 import {
     ref,
     onMounted,
@@ -86,7 +80,7 @@ import {
 export default {
     name: "Navbar",
     setup() {
-        const currentDateTime = ref(dayjs().format("MMMM D, YYYY h:mm A"));
+        const currentDateTime = ref(dayjs().format("ddd, DD MMM h:mmA"));
         const isDropdownOpen = ref(false);
         const isNotificationDropdownOpen = ref(false);
         const isCheckedIn = ref(false);
@@ -147,7 +141,6 @@ export default {
         });
 
         return {
-            logo,
             currentDateTime,
             toggleDropdown,
             toggleNotificationDropdown,

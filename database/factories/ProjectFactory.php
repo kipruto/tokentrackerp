@@ -14,10 +14,11 @@ class ProjectFactory extends Factory
     {
         return [
             'project_name' => $this->faker->words(3, true),
-            'start_date' => $this->faker->dateTimeBetween('-1 years', 'now'), // Corrected field name
+            'start_date' => $this->faker->dateTimeBetween('-1 years', 'now'),
             'client_name' => $this->faker->company,
             'deadline' => $this->faker->dateTimeBetween('now', '+6 months'),
-            'status' => $this->faker->randomElement(['Active', 'Inactive', 'Completed', 'Cancelled']),
+            'project_type' => $this->faker->randomElement(['Internal', 'External']), // Added project type
+            'status' => $this->faker->randomElement(['Incoming', 'In progress', 'On hold', 'Completed', 'Cancelled']), // Updated status values
         ];
     }
 

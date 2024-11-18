@@ -1,12 +1,14 @@
 <template>
-<div>
-    <Navbar />
+    <div class="flex flex-col w-full relative bg-transparent overflow-x-hidden overflow-y-scroll">
+        <div class="w-[10%]">
+            <Sidebar class=" fixed top-0 shadow" />
+        </div>
 
-    <div class="flex flex-row flex-wrap bg-gray-200">
-        <Sidebar />
+    <div class="w-[80%] ml-[18%] bg-transparent">
+        <Navbar class="h-16" />
 
         <!-- Main content area -->
-        <div class="md:mt-16 flex-1 my-8 mx-auto p-20 bg-white card max-w-[83%]">
+        <div class="md:mt-16 flex-1 my-8 mx-auto p-20 bg-white card max-w-[95%] min-h-[80vh]">
             <!-- Page title and add project button -->
             <div class="items-center flex justify-between md:divide-x md:divide-gray-100 dark:divide-gray-700 border-b-2 pb-4">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Projects Overview</h1>
@@ -49,12 +51,12 @@
                 </div>
             </div>
 
-            <div v-else class="flex flex-col card mb-10">
+            <div v-else class="flex flex-col card mb-10 border-none">
 
                 <div class="grid grid-cols-5 gap-4 my-6">
                     <StatusCard label="Incoming" count="0" :index="0" />
-                    <StatusCard label="Ongoing" count="3" :index="1" />
-                    <StatusCard label="On Hold" count="2" :index="2" />
+                    <StatusCard label="In progress" count="3" :index="1" />
+                    <StatusCard label="On hold" count="2" :index="2" />
                     <StatusCard label="Completed" count="10" :index="3" />
                     <StatusCard label="Cancelled" count="2" :index="5" />
                 </div>
@@ -119,15 +121,39 @@
                                         <td class="px-2 text-sm text-gray-900 whitespace-nowrap dark:text-white">
                                             <span :class="getStatusClass(project.status)" class="px-3 py-1 rounded-full text-xs font-semibold">{{ project.status }}</span>
                                         </td>
-                                        <td class="flex px-2 py-1 space-x-2 whitespace-nowrap items-center justify-center">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center border rounded-lg text-blue-500 hover:bg-blue-200 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                View
-                                            </button>
-                                            <button @click="deleteProject(project.id)" type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
-                                                <i class="fad fa-trash text-xs mr-2"></i>
-                                                Delete
-                                            </button>
-                                        </td>
+                                        <td class="px-2 py-1 whitespace-nowrap items-center justify-center">
+                                            <div class="relative">
+                                              <!-- Hamburger Icon -->
+                                              <button @click="toggleMenu" class="p-2 rounded-full hover:bg-gray-200 focus:outline-none border">
+                                                <i class="fas fa-ellipsis-v text-gray-500"></i>
+                                              </button>
+                                              <!-- Dropdown Menu -->
+                                              <div
+                                                v-if="isMenuOpen"
+                                                class="absolute right-0 mt-2 w-28 bg-white rounded-md shadow-lg z-10"
+                                              >
+                                                <ul class="py-1">
+                                                  <li>
+                                                    <button
+                                                      @click="viewProject(project.id)"
+                                                      class="block px-4 py-2 text-sm text-blue-500 hover:bg-blue-100 w-full text-left"
+                                                    >
+                                                      View
+                                                    </button>
+                                                  </li>
+                                                  <li>
+                                                    <button
+                                                      @click="deleteProject(project.id)"
+                                                      class="block px-4 py-2 text-sm text-red-500 hover:bg-red-100 w-full text-left"
+                                                    >
+                                                      Delete
+                                                    </button>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </div>
+                                          </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -173,14 +199,9 @@ export default {
             selectedProjects: [],
             completedProjects: ref([]),
             currentPage: 1,
-            clients: [{ id: 1, name: 'Client A' }, { id: 2, name: 'Client B' }],
             totalPages: 0,
             noProjects: false,
             isAddProjectModalOpen: false,
-            newProject: {
-                name: '',
-                client: '',
-            },
             statusCounts: {
                 active: 5,
                 inactive: 3,
@@ -226,19 +247,6 @@ export default {
                 client: ''
             }; // Reset modal form
         },
-
-        // Submit the new project to the server
-        submitNewProject(projectPayload) {
-            axios.post('/api/projects', projectPayload)
-                .then((response) => {
-                    this.projects.unshift(response.data.project);
-                    this.closeAddProjectModal();
-                })
-                .catch((error) => {
-                    console.error('Error creating project:', error);
-                });
-        },
-
         // Delete the project
         deleteProject(projectId) {
             if (confirm('Are you sure you want to delete this project?')) {

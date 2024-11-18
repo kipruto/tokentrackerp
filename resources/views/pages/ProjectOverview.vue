@@ -1,5 +1,5 @@
 <template>
-<div class="card mt-6">
+<div class="card shadow-sm mt-6">
     <!-- header -->
     <div class="card-header flex flex-row justify-between">
         <h1 class="h6">Performance Overview</h1>

@@ -1,11 +1,11 @@
 <template>
-<div id="mainbody">
+<div id="mainbody" class="bg-transparent">
     <router-view></router-view> <!-- This is where routed components will be rendered -->
 </div>
 </template>
 
 <script>
-import store from "../store"; // Assuming you use Vuex for state management
+import store from "../store";
 import {
     ref
 } from 'vue';
@@ -37,12 +37,37 @@ export default {
 
 <style>
 /* Global styles for your application */
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap');
 
+@font-face {
+    font-family: 'SofiaPro';
+    src: url('/fonts/SofiaProRegular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'SofiaPro';
+    src: url('/fonts/SofiaProMedium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'SofiaPro';
+    src: url('/fonts/SofiaProSemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'SofiaPro';
+    src: url('/fonts/SofiaProBold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+  }
 #mainbody,
 div {
-    font-family: 'Gabarito', sans-serif;
+    font-family: 'Sofia Pro', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #000000;
@@ -57,13 +82,13 @@ h5,
 h6,
 a,
 p {
-    font-family: 'Gabarito', sans-serif;
+    font-family: 'SofiaPro', sans-serif;
     color: #000000;
     text-transform: none;
 }
 
 input {
-    font-family: 'Gabarito', sans-serif;
+    font-family: 'SofiaPro', sans-serif;
 }
 
 .error {

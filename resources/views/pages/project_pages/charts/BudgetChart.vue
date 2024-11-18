@@ -6,14 +6,29 @@
 
   <script>
   import { onMounted, ref } from 'vue';
-  import { Chart, BarElement, CategoryScale, LinearScale } from 'chart.js';
+  import {
+    Chart,
+    BarController,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
 
-  Chart.register(BarElement, CategoryScale, LinearScale);
+  // Register all necessary components for bar charts
+  Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
   export default {
     props: {
-      allocated: Number,
-      current: Number,
+      allocated: {
+        type: Number,
+        required: true,
+      },
+      current: {
+        type: Number,
+        required: true,
+      },
     },
     setup(props) {
       const budgetChart = ref(null);
@@ -32,9 +47,9 @@
             ],
           },
           options: {
-            indexAxis: 'y',
+            indexAxis: 'y', // Horizontal bar chart
             plugins: {
-              legend: { display: false },
+              legend: { display: false }, // Hide legend for simplicity
             },
           },
         });

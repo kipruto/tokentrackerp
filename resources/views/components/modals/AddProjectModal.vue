@@ -17,22 +17,24 @@
                 <!-- Project Name -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Project Name</label>
-                    <input v-model="projectName" type="text" placeholder="Enter project name" class="w-full p-2 border rounded focus:outline-none" />
+                    <input v-model="projectName" type="text" placeholder="Enter project name" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required  />
+                    <p v-if="errors.project_name" class="text-red-600 text-sm my-1">{{ errors.project_name[0] }}</p>
                 </div>
 
                 <!-- Project Type -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Project Type</label>
-                    <select v-model="projectType" class="w-full p-2 border rounded focus:outline-none">
+                    <select v-model="projectType" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required >
                         <option value="Internal">Internal</option>
                         <option value="External">External</option>
                     </select>
+                    <p v-if="errors.project_type" class="text-red-600 text-sm my-1">{{ errors.project_type[0] }}</p>
                 </div>
 
                 <!-- Client Name (conditional based on project type) -->
                 <div v-if="projectType === 'External'" class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Client Name</label>
-                    <select v-model="clientId" class="w-full p-2 border rounded focus:outline-none">
+                    <select v-model="clientId" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required >
                         <option v-for="client in clients" :key="client.id" :value="client.id">
                             {{ client.name }}
                         </option>
@@ -41,30 +43,37 @@
                     <!-- If selecting "Add New Client" -->
                     <div v-if="clientId === 'new'" class="mt-2">
                         <label class="block text-sm font-medium text-gray-700">New Client Name</label>
-                        <input v-model="newClientName" type="text" placeholder="Enter client name" class="w-full p-2 border rounded focus:outline-none" />
+                        <input v-model="newClientName" type="text" placeholder="Enter client name" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required  />
                     </div>
+                    <p v-if="errors.client_id" class="text-red-600 text-sm my-1">{{ errors.client_id[0] }}</p>
+                    <p v-if="errors.new_client_name" class="text-red-600 text-sm my-1">{{ errors.new_client_name[0] }}</p>
                 </div>
 
                 <!-- Start Date -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Start Date</label>
-                    <input v-model="startDate" @change="validateDates" type="date" class="w-full p-2 border rounded focus:outline-none" />
+                    <input v-model="startDate" @change="validateDates" type="date" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required  />
+                    <p v-if="errors.start_date" class="text-red-600 text-sm mt-1">{{ errors.start_date[0] }}</p>
                 </div>
 
                 <!-- Deadline -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Deadline</label>
-                    <input v-model="deadline" @change="validateDates" type="date" class="w-full p-2 border rounded focus:outline-none" />
+                    <input v-model="deadline" @change="validateDates" type="date" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required  />
                 </div>
                 <p v-if="dateError" class="text-red-600 text-sm my-1">{{ dateError }}</p>
+
                 <!-- Status -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700">Status</label>
-                    <select v-model="status" class="w-full p-2 border rounded focus:outline-none">
-                        <option value="Active">Active</option>
-                        <option value="Completed">Completed</option>
-                        <option value="On Hold">On Hold</option>
+                    <select v-model="status" class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-500" required >
+                        <option value="incoming">Incoming</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="on_hold">On Hold</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
                     </select>
+                    <p v-if="errors.status" class="text-red-600 text-sm my-1">{{ errors.status[0] }}</p>
                 </div>
 
                 <!-- Action Buttons -->
@@ -76,25 +85,45 @@
                         Cancel
                     </button>
                 </div>
+
+                <!-- Display server-side validation errors after submitting -->
+                <div v-if="formErrors" class="mt-4 text-red-600">
+                    <p v-for="(error, field) in formErrors" :key="field" class="text-sm">{{ error[0] }}</p>
+                </div>
             </form>
+
         </div>
     </div>
 </div>
 </template>
 
+
 <script>
+
+import {
+    ref
+} from 'vue';
+
 export default {
     props: ['isAddProjectModalOpen', 'clients'],
     emits: ['close', 'submit'],
     data() {
         return {
+            projects: ref([]),
             projectName: '',
+            clients: [{ id: 1, name: 'Client A' }, { id: 2, name: 'Client B' }],
             projectType: 'Internal', // default to 'Internal'
             clientId: '',
             newClientName: '',
             startDate: '',
             deadline: '',
-            status: 'Active',
+            status: 'incoming',
+            errors: {},
+            formErrors: null,
+            newProject: {
+                name: '',
+                client: '',
+            },
         };
     },
     methods: {
@@ -110,18 +139,29 @@ export default {
         closeAddProjectModal() {
             this.$emit('close');
         },
-        submitProject() {
+        async submitProject() {
             if (this.dateError) return;
             const projectPayload = {
-                name: this.projectName,
-                type: this.projectType,
+                project_name: this.projectName,
+                project_type: this.projectType,
                 client_id: this.clientId === 'new' ? this.newClientName : this.clientId,
                 start_date: this.startDate,
                 deadline: this.deadline,
                 status: this.status,
             };
-            this.$emit('submit', projectPayload);
-            this.closeAddProjectModal();
+            try {
+                const response = await axios.post('/api/projects', projectPayload).then((response) => {
+                    this.projects.unshift(response.data.project);
+                    this.closeAddProjectModal();
+                });
+                this.$emit('submit', response.data);
+                this.closeAddProjectModal();
+            } catch (error) {
+                if (error.response && error.response.data.errors) {
+                    this.errors = error.response.data.errors;
+                    this.formErrors = error.response.data.errors;
+                }
+            }
         },
     },
     watch: {
